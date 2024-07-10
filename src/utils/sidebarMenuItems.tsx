@@ -1,5 +1,5 @@
 import type { MenuProps } from 'antd';
-import { FaHome, FaPhone, FaToolbox, FaUser } from 'react-icons/fa';
+import { FaHandshake, FaHome, FaPhone, FaToolbox, FaUser } from 'react-icons/fa';
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -21,6 +21,10 @@ function getItem(
 }
 // badgeni hara qoyursan iconu import ele bura. iconsuz divnen elemek istiyirdim
 export const menus: MenuItem[] = [
-    getItem(`Slots`, '10', undefined, <FaHome />),
-    getItem(`Poker`, '11', undefined, <FaPhone />),
+    // getItem(`Slots`, '10', undefined, <FaHome />),
+    // getItem(`Poker`, '11', undefined, <FaPhone />),
+    getItem('Settings', 100, [
+        getItem('Partners', 101, undefined, <FaHandshake />, ),
+        getItem('Tools', 102, undefined, <FaToolbox />, ),
+    ], <FaToolbox />, ),
 ];

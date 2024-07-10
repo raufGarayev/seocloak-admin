@@ -17,6 +17,11 @@ const AntThemeDesign = ({children}: {children: ReactNode}) => {
                     darkItemSelectedBg: '#ffffff0d',
                     darkItemColor: '#a3aed1',
                     darkItemSelectedColor: '#fff',
+                    darkSubMenuItemBg: '#111c43',
+                },
+                Table: {
+                    headerBg: '#fff',
+                    headerSplitColor: '#fff'
                 }
             }
         }}

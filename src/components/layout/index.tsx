@@ -1,26 +1,39 @@
-import { Layout, Menu } from 'antd'
+import { Button, Layout, Menu } from 'antd'
 import Router from '../../routes'
-import './layout.sass'
 import { useState } from 'react'
-import { menus } from '../../utils/sidebarMenuItems'
 import SidebarComponent from './sidebar'
+import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai'
+import { GrLogout } from 'react-icons/gr'
+import './layout.sass'
 
 const { Header, Sider, Content } = Layout
 
 const MainLayout = () => {
+  const [collapsed, setCollapsed] = useState(false)
 
-    const [collapsed, setCollapsed] = useState(false)
-    const [selectedKey, setSelectedKey] = useState('1')
-
-    const handleMenuSelect = ({ key }: { key: string }) => {
-        setSelectedKey(key)
-    }
+  const handleLogout = () => {}
 
   return (
     <Layout>
-      <SidebarComponent />
+      <SidebarComponent collapsed={collapsed} setCollapsed={setCollapsed} />
       <Layout>
-        <Header>Header</Header>
+        <Header>
+          <Button
+            type='text'
+            icon={
+              collapsed ? (
+                <AiOutlineMenuUnfold className='menu-icon' />
+              ) : (
+                <AiOutlineMenuFold className='menu-icon' />
+              )
+            }
+            onClick={() => setCollapsed(!collapsed)}
+          />
+          <div className='user-profile'>
+            <span>Admin</span>
+            <GrLogout onClick={handleLogout} className='logout-icon' />
+          </div>
+        </Header>
         <Content>
           <Router />
         </Content>
