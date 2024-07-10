@@ -6,26 +6,20 @@ export const partnersColumns = (
 ) => {
   return [
     {
-      title: <span className='columnName'>#</span>,
-      render: (_: any, __: any, index: number) => (
-        <span className='columnData'>{index + 1}</span>
-      ),
-      width: '7%'
-    },
-    {
       title: <span className='columnName'>ID</span>,
       render: ({ id }: { id: number }) => <span className='columnData'>{id}</span>,
-      width: '7%'
+      width: '10%'
     },
     {
       title: <span className='columnName'>Partner name</span>,
-      render: ({ name }: { name: string }) => <span className='columnData'>{name}</span>
+      render: ({ name }: { name: string }) => <span className='columnData'>{name}</span>,
     },
     {
       title: <span className='columnName'>Partner logo</span>,
       render: ({ logo }: { logo: string }) => (
-        <img src={logo} alt='partner logo' />
-      )
+        <div className='columnImage'><img src={`http://localhost:3000/${logo}`} alt='partner logo' /></div>
+      ),
+      width: '26%'
     },
     {
       title: <span className='columnName'>Actions</span>,
@@ -40,7 +34,8 @@ export const partnersColumns = (
             className='deleteIcon'
           />
         </div>
-      )
+      ),
+      width: '10%'
     }
   ]
 }
