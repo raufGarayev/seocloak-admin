@@ -1,0 +1,25 @@
+@import '../../../styles/variables'
+    
+.contentBtns
+    display: flex
+    justify-content: flex-end
+    gap: 10px
+    border-top: 1px solid #f3f3f3
+    padding-top: 20px
+    .saveBtn, .cancelBtn
+        border-radius: 4px
+    .saveBtn
+        background-color: #845adf
+        color: #fff
+        &:hover
+            background-color: #6b3dbf !important
+            color: #fff !important
+            border: 1px solid #845adf !important
+    .cancelBtn
+        border-radius: 4px
+        background-color: #F3F6F8
+        border: 1px solid #F3F6F8
+        &:hover
+            background-color: #e4ecf2 !important
+            border: 1px solid #F3F6F8 !important
+            color: $mainTextColor !important

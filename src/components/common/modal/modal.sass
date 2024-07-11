@@ -1,0 +1,62 @@
+@import '../../../styles/variables'
+
+.ant-modal
+    border-radius: 8px
+    border: 1px solid #ffffff6b
+    overflow: hidden
+    padding-bottom: 0
+
+.modalHeader
+    height: 70px
+    display: flex
+    align-items: center
+    border-bottom: 1px solid #f3f3f3
+    .headerContent
+        font-size: 16px
+        color: $mainTextColor
+        padding: 16px 20px
+        font-weight: 600
+
+
+.ant-modal-footer
+    margin: 0 !important
+    padding: 16px !important
+    border-top: 1px solid #f3f3f3 !important
+
+.customModal
+    .ant-modal-content
+        padding: 0
+    .ant-modal-close-x
+        color: $mainTextColor
+    .ant-modal-footer
+        padding-bottom: 16px
+        padding-right: 16px
+
+.modalDel
+    padding: 20px
+    p
+        color: $mainTextColor
+        font-size: 16px
+
+.modalContent
+    padding: 20px
+
+.modalFooter
+    display: flex
+    justify-content: flex-end
+    gap: 10px
+    .saveBtnModal
+        border-radius: 4px
+        background-color: #845adf
+        color: #fff
+        &:hover
+            background-color: #6b3dbf !important
+            color: #fff !important
+    .cancelBtnModal
+        border-radius: 4px
+        background-color: #F3F6F8
+        border: 1px solid #F3F6F8
+        &:hover
+            background-color: #e4ecf2 !important
+            border: 1px solid #F3F6F8 !important
+            color: $mainTextColor !important
