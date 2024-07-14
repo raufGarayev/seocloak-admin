@@ -6,9 +6,10 @@ import AntThemeDesign from './components/layout/antThemeDesign.tsx'
 import { Provider } from 'react-redux'
 import store from './store/index.ts'
 import './styles/index.sass'
+import AuthProvider from './context/authContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <AuthProvider>
     <BrowserRouter>
       <Provider store={store}>
         <AntThemeDesign>
@@ -16,5 +17,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </AntThemeDesign>
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>
+  </AuthProvider>
 )

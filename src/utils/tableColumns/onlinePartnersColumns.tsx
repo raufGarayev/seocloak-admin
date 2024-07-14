@@ -1,43 +1,125 @@
-import { FaEdit, FaTrash } from 'react-icons/fa'
+import { FaCheckCircle, FaCopy, FaEdit, FaTrash } from 'react-icons/fa'
 import '../../styles/columns.sass'
+import { MdBlock } from 'react-icons/md'
+import { Dropdown, Tooltip } from 'antd'
+import type { MenuProps } from 'antd';
+import { IoCopy } from 'react-icons/io5';
 
 export const onlinePartnersColumns = (
   handleEditOnPartner: (partner: any) => void,
-  handleDelOnPartner: (partner: any) => void
+  handleDelOnPartner: (partner: any) => void,
+  handleOnPartnerStatus: (partner: any) => void,
+  handleCopyHere: (partner: any) => void,
+  handleCopyAnywhere: (partner: any) => void
 ) => {
   return [
+    {
+      key: 'sort'
+    },
     {
       title: <span className='columnName'>Partner name</span>,
       render: ({ partnerName }: { partnerName: string }) => (
         <span className='columnData'>{partnerName}</span>
-      )
+      ),
+      width: '35%'
     },
     {
       title: <span className='columnName'>Partner logo</span>,
       render: ({ partnerLogo }: { partnerLogo: string }) => (
-        <img src={partnerLogo} alt='partner logo' />
+        <div className='columnImage'>
+          <img
+            src={import.meta.env.VITE_DOMAIN + '/images/' + partnerLogo}
+            alt='partner logo'
+          />
+        </div>
       )
     },
     {
       title: <span className='columnName'>Status</span>,
       render: ({ status }: { status: boolean }) => (
-        <span className='columnData'>{status ? 'Active' : 'Inactive'}</span>
-      )
+        <div className={status ? 'activePartner' : 'inactivePartner'}></div>
+      ),
+      width: '20%'
     },
     {
       title: <span className='columnName'>Actions</span>,
-      render: (partner: any) => (
-        <div style={{ display: 'flex', gap: 7 }}>
-          <FaEdit
-            onClick={() => handleEditOnPartner(partner)}
-            className='editIcon'
-          />
-          <FaTrash
-            onClick={() => handleDelOnPartner(partner)}
-            className='deleteIcon'
-          />
-        </div>
-      )
+      render: (partner: any) => {
+        const items: MenuProps['items'] = [
+          {
+            label: partner.status ? 'Disable' : 'Activate',
+            key: '1',
+            icon: partner.status ? <MdBlock className='disableIcon' /> : <FaCheckCircle className='activateIcon' />,
+            onClick: () => handleOnPartnerStatus(partner),
+            style: { color: partner.status ? 'black' : 'green' }
+          },
+          {
+            label: 'Delete',
+            key: '3',
+            icon: <FaTrash />,
+            danger: true,
+            onClick: () => handleDelOnPartner(partner),
+          },
+          {
+            label: 'Copy here',
+            key: '4',
+            icon: <FaCopy className='copyIcon' />,
+            style: { color: 'blue'},
+            onClick: () => handleCopyHere(partner)
+          },
+          {
+            label: 'Copy anywhere',
+            key: '5',
+            icon: <IoCopy className='copyIcon' />,
+            style: { color: 'blue'},
+            onClick: () => handleCopyAnywhere(partner)
+          }
+        ];
+
+        
+        const menuProps = {
+          items,
+        };
+        return (
+        
+          <Dropdown.Button menu={menuProps} onClick={() => handleEditOnPartner(partner)}>
+            <FaEdit
+              onClick={() => handleEditOnPartner(partner)}
+              className='editIcon'
+            />
+          </Dropdown.Button> 
+        )
+      },
+      width: '15%'
     }
   ]
 }
+
+
+
+
+
+
+{/* <div style={{ display: 'flex', gap: 7 }}>
+          <Tooltip title='Edit'>
+            <FaEdit
+              onClick={() => handleEditOnPartner(partner)}
+              className='editIcon'
+            />
+          </Tooltip>
+          <Tooltip title='Delete'>
+            <FaTrash
+              onClick={() => handleDelOnPartner(partner)}
+              className='deleteIcon'
+            />
+          </Tooltip>
+
+          {partner.status ? (
+            <Tooltip title='Disable'>
+              <MdBlock className='disableIcon' onClick={() => handleOnPartnerStatus(partner)} />
+            </Tooltip>
+          ) : (
+            <Tooltip title='Activate'>
+              <FaCheckCircle className='activateIcon' onClick={() => handleOnPartnerStatus(partner)} />
+            </Tooltip>
+          )}
+        </div> */}

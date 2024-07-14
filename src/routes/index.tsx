@@ -6,18 +6,25 @@ import slugify from 'slugify'
 import Gametype from '../pages/gametype'
 import { useSelector } from 'react-redux'
 import { IRootStore } from '../store'
+import EditOnlinePartner from '../pages/editOnlinePartner'
 
 const Router = () => {
   const { gametypes } = useSelector((state: IRootStore) => state.gametypes)
-  const [dynRoutes, setDynRoutes] = useState<RouteType[]>([])
+  const [gametypeRoutes, setGametypeRoutes] = useState<RouteType[]>([])
+  const [dynGametypeRoutes, setDynGametypeRoutes] = useState<RouteType[]>([])
 
   useEffect(() => {
       const newRoutes = gametypes.map((item: any) => ({
         path: `/${slugify(item.name, {lower: true})}-${item.id}`,
         Component: () => <Gametype />
       }))
-      setDynRoutes(newRoutes)
+      setGametypeRoutes(newRoutes)
 
+      const newDynRoutes = gametypes.map((item: any) => ({
+        path: `/${slugify(item.name, {lower: true})}-${item.id}/:id`,
+        Component: () => <EditOnlinePartner />
+      }))
+      setDynGametypeRoutes(newDynRoutes)
   }, [gametypes])
 
   return (
@@ -26,7 +33,10 @@ const Router = () => {
         {routes.map((route: RouteType, index) => (
           <Route key={index} {...route} />
         ))}
-        {dynRoutes.map((route: RouteType, index) => (
+        {gametypeRoutes.map((route: RouteType, index) => (
+          <Route key={index} {...route} />
+        ))}
+        {dynGametypeRoutes.map((route: RouteType, index) => (
           <Route key={index} {...route} />
         ))}
       </Route>

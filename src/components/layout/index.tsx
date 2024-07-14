@@ -1,17 +1,23 @@
 import { Button, Layout, Menu } from 'antd'
 import Router from '../../routes'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import SidebarComponent from './sidebar'
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai'
 import { GrLogout } from 'react-icons/gr'
+import { AuthContext } from '../../context/authContext'
 import './layout.sass'
+
 
 const { Header, Sider, Content } = Layout
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false)
+  const { user } = useContext(AuthContext)
 
-  const handleLogout = () => {}
+  const handleLogout = () => {
+    localStorage.removeItem('clToken')
+    window.location.reload()
+  }
 
   return (
     <Layout>
@@ -30,7 +36,7 @@ const MainLayout = () => {
             onClick={() => setCollapsed(!collapsed)}
           />
           <div className='user-profile'>
-            <span>Admin</span>
+            <span>{user?.username.toUpperCase()}</span>
             <GrLogout onClick={handleLogout} className='logout-icon' />
           </div>
         </Header>

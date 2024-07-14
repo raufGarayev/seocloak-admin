@@ -22,7 +22,23 @@ const AntThemeDesign = ({children}: {children: ReactNode}) => {
                 Table: {
                     headerBg: '#fff',
                     headerSplitColor: '#fff'
-                }
+                },
+                Input: {
+                    borderRadius: 5.6,
+                    controlHeight: 40
+                },
+                Select: {
+                    borderRadius: 5.6,
+                    controlHeight: 40
+                },
+                InputNumber: {
+                    borderRadius: 5.6,
+                    controlHeight: 40
+                },
+                Checkbox: {
+                    borderRadius: 5.6,
+                    controlHeight: 40
+                },
             }
         }}
     >

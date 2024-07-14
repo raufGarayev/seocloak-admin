@@ -1,63 +1,78 @@
-import React, { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import CustomCard from '../../../../../components/common/card'
 import CustomTable from '../../../../../components/common/table'
 import { partnersColumns } from '../../../../../utils/tableColumns/partnersColumns'
-import { getPartners } from '../../../../../services/partners'
 import { Input } from 'antd'
 import './partnersTable.sass'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, IRootStore } from '../../../../../store'
+import { setFilters, setSelectedPartner } from '../../../../../store/slices/partnersSlices'
+import { fetchPartnersAction } from '../../../../../store/slices/partnersSlices/actions'
+import { IPartner } from '../../../../../types/partners'
+import { toggleModal } from '../../../../../store/slices/modalSlices'
 
 const PartnersTable = () => {
-
-  const [partners, setPartners] = useState()
+  const dispatch = useDispatch<AppDispatch>()
+  const { partners, filters, loading } = useSelector(
+    (state: IRootStore) => state.partners
+  )
   const [searchValue, setSearchValue] = useState('')
+  const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null)
 
   useEffect(() => {
-    if(searchValue) {
-      const delayDebounce = setTimeout(() => {
-        getPartners({ search: searchValue }).then((data) => {
-          setPartners(data);
-        });
-      }, 700);
-  
-      return () => clearTimeout(delayDebounce);
-    } else {
-      getPartners().then((data) => {
-        setPartners(data)
-      })
-    }
-  }, [searchValue]);
+    dispatch(fetchPartnersAction(filters))
+  }, [filters])
 
-  const handleEditPartner = () => {}
+  const handleEditPartner = (partner: IPartner) => {
+    dispatch(setSelectedPartner(partner))
+    dispatch(toggleModal('edit'))
+  }
 
-  const handleDeletePartner = () => {}
+  const handleDeletePartner = (partner: IPartner) => {
+    dispatch(setSelectedPartner(partner))
+    dispatch(toggleModal('del'))
+  }
 
-  const handleTableChange = (pagination: any, filters: any, sorter: any) => {
+  const handleTableChange = (pagination: any, _: any, __: any) => {
     const { current } = pagination
-    console.log("current", current)
-    getPartners({page: current, limit: 10}).then((data) => {
-      setPartners(data)
-    })
+    dispatch(setFilters({ ...filters, page: current }))
   }
 
   const handlePartnerSearch = (e: any) => {
-    const { value } = e.target
-    setSearchValue(value)
+    setSearchValue(e.target.value)
+
+    if (debounceTimeout) clearTimeout(debounceTimeout)
+
+    // Set a new timeout
+    const newTimeout = setTimeout(() => {
+      dispatch(setFilters({ ...filters, search: searchValue }))
+    }, 700)
+
+    // Save the new timeout
+    setDebounceTimeout(newTimeout)
   }
 
   return (
     <CustomCard>
       <div className='searchContainer'>
-        <Input placeholder='Search partner' value={searchValue} onChange={handlePartnerSearch} allowClear className='searchInput' />
+        <Input
+          placeholder='Search partner'
+          value={searchValue}
+          onChange={handlePartnerSearch}
+          allowClear
+          className='searchInput'
+        />
       </div>
       <CustomTable
         columns={partnersColumns(handleEditPartner, handleDeletePartner)}
         data={partners?.data || []}
         paginationOptions={{
-          total: partners?.count,
-          current: partners?.currentPage,
-          showSizeChanger: false,
+          total: partners?.total,
+          current: filters.page,
+          showSizeChanger: false
         }}
         handleTableChange={handleTableChange}
+        loading={loading}
       />
     </CustomCard>
   )

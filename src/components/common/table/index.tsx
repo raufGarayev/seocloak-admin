@@ -6,6 +6,8 @@ interface CustomTableProps {
     loading?: boolean;
     paginationOptions?: any;
     handleTableChange?: any;
+    rowKey?: any;
+    components?: any;
 }
 
 const CustomTable = (props: CustomTableProps) => {
@@ -16,6 +18,8 @@ const CustomTable = (props: CustomTableProps) => {
         pagination={props.paginationOptions}
         onChange={props.handleTableChange}
         loading={props.loading}
+        rowKey={props.rowKey}
+        components={props.components}
     />
   )
 }

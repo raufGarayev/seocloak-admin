@@ -9,6 +9,8 @@ import { fetchGametypesAction } from '../../../store/slices/gametypeSlices/actio
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../store'
 import { IGametype } from '../../../types/gametypes'
+import Logo from '../../../assets/header_logo_modified.svg'
+import JustLogo from '../../../assets/header_logo_just.svg'
 
 const { Sider } = Layout
 type MenuItem = Required<MenuProps>['items'][number]
@@ -102,7 +104,7 @@ const SidebarComponent = ({
 
   return (
     <Sider width={240} collapsed={collapsed}>
-      <div className='logo'>{collapsed ? <h2>PD</h2> : <h2>LOGO</h2>}</div>
+      <div className='logo' style={collapsed ? {width: 80} : {}}>{collapsed ? <img src={JustLogo} /> : <img src={Logo} alt='logo' />}</div>
       <Menu
         theme='dark'
         mode='inline'

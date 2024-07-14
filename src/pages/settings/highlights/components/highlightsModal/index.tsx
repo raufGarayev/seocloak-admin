@@ -6,7 +6,11 @@ import './highlightsModal.sass'
 import { toggleModal } from '../../../../../store/slices/modalSlices'
 import { setSelectedHighlight } from '../../../../../store/slices/highlightsSlices'
 import { useEffect } from 'react'
-import { createHighlightsAction, updateHighlightsAction } from '../../../../../store/slices/highlightsSlices/actions'
+import {
+  createHighlightsAction,
+  deleteHighlightsAction,
+  updateHighlightsAction
+} from '../../../../../store/slices/highlightsSlices/actions'
 
 const HighlightsModal = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -23,12 +27,20 @@ const HighlightsModal = () => {
         dispatch(setSelectedHighlight(null))
         form.resetFields()
       })
-    } else if('edit') {
-        dispatch(updateHighlightsAction(selectedHighlight)).then(() => {
-            dispatch(toggleModal(''))
-            dispatch(setSelectedHighlight(null))
-            form.resetFields()
+    } else if (type === 'edit') {
+      dispatch(updateHighlightsAction(selectedHighlight)).then(() => {
+        dispatch(toggleModal(''))
+        dispatch(setSelectedHighlight(null))
+        form.resetFields()
+      })
+    } else {
+      if (selectedHighlight) {
+        dispatch(deleteHighlightsAction(selectedHighlight.id)).then(() => {
+          dispatch(toggleModal(''))
+          dispatch(setSelectedHighlight(null))
+          form.resetFields()
         })
+      }
     }
   }
 
