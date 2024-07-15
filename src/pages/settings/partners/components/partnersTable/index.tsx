@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CustomCard from '../../../../../components/common/card'
 import CustomTable from '../../../../../components/common/table'
 import { partnersColumns } from '../../../../../utils/tableColumns/partnersColumns'

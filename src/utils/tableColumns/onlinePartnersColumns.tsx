@@ -1,7 +1,7 @@
 import { FaCheckCircle, FaCopy, FaEdit, FaTrash } from 'react-icons/fa'
 import '../../styles/columns.sass'
 import { MdBlock } from 'react-icons/md'
-import { Dropdown, Tooltip } from 'antd'
+import { Dropdown } from 'antd'
 import type { MenuProps } from 'antd';
 import { IoCopy } from 'react-icons/io5';
 

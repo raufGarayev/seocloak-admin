@@ -1,4 +1,4 @@
-import { Form, Input, Select } from 'antd'
+import { Form, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { setSelectedOnlinePartner } from '../../../../store/slices/onlinePartnersSlice'
@@ -17,28 +17,6 @@ const OnlinePartnerCopyModal = () => {
   const [form] = Form.useForm()
 
   const handleModalSubmit = () => {
-    // if (type === 'add') {
-    //   dispatch(createHighlightsAction(selectedOnlinePartner)).then(() => {
-    //     dispatch(toggleModal(''))
-    //     dispatch(setSelectedOnlinePartner(null))
-    //     form.resetFields()
-    //   })
-    // } else if (type === 'edit') {
-    //   dispatch(updateHighlightsAction(selectedOnlinePartner)).then(() => {
-    //     dispatch(toggleModal(''))
-    //     dispatch(setSelectedOnlinePartner(null))
-    //     form.resetFields()
-    //   })
-    // } else {
-    //   if (selectedOnlinePartner) {
-    //     dispatch(deleteHighlightsAction(selectedOnlinePartner.id)).then(() => {
-    //       dispatch(toggleModal(''))
-    //       dispatch(setSelectedOnlinePartner(null))
-    //       form.resetFields()
-    //     })
-    //   }
-    // }
-    console.log(selectedOnlinePartner)
     dispatch(createOnlinePartnerAction({
         ...selectedOnlinePartner,
         id: undefined,

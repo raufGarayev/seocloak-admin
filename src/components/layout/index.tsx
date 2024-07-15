@@ -1,4 +1,4 @@
-import { Button, Layout, Menu } from 'antd'
+import { Button, Layout } from 'antd'
 import Router from '../../routes'
 import { useContext, useState } from 'react'
 import SidebarComponent from './sidebar'
@@ -7,8 +7,7 @@ import { GrLogout } from 'react-icons/gr'
 import { AuthContext } from '../../context/authContext'
 import './layout.sass'
 
-
-const { Header, Sider, Content } = Layout
+const { Header, Content } = Layout
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false)
@@ -21,7 +20,7 @@ const MainLayout = () => {
 
   return (
     <Layout>
-      <SidebarComponent collapsed={collapsed} setCollapsed={setCollapsed} />
+      <SidebarComponent collapsed={collapsed} />
       <Layout>
         <Header>
           <Button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageHeader from '../../components/ui/pageHeader'
 import OnlinePartnersTable from './components/onlinePartnersTable'
 import { useLocation, useNavigate } from 'react-router-dom'

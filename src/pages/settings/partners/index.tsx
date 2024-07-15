@@ -1,4 +1,3 @@
-import React from 'react'
 import PageHeader from '../../../components/ui/pageHeader'
 import PartnersTable from './components/partnersTable'
 import { useDispatch } from 'react-redux'

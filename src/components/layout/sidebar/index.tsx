@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Layout, Menu, MenuProps } from 'antd'
 import { menus } from '../../../utils/sidebarMenuItems'
-import { FaHome } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import slugify from 'slugify'
 import { GiPokerHand } from 'react-icons/gi'
@@ -17,10 +16,8 @@ type MenuItem = Required<MenuProps>['items'][number]
 
 const SidebarComponent = ({
   collapsed,
-  setCollapsed
 }: {
   collapsed: boolean
-  setCollapsed: (collapsed: boolean) => void
 }) => {
   const [localMenus, setLocalMenus] = useState(menus)
   const [selectedKey, setSelectedKey] = useState('1')
@@ -31,10 +28,6 @@ const SidebarComponent = ({
   useEffect(() => {
     dispatch(fetchGametypesAction())
   }, [])
-
-  useEffect(() => {
-    console.log("selectedKey: ", selectedKey)
-  }, [selectedKey])
 
   useEffect(() => {
     const newMenus = gametypes.map((item: IGametype) => ({
@@ -90,7 +83,7 @@ const SidebarComponent = ({
 
   const handleMenuSelect = (item: any) => {
     const dir = item.domEvent.currentTarget.innerText
-    const parentDir = item.domEvent.currentTarget.childNodes[1].innerText
+    // const parentDir = item.domEvent.currentTarget.childNodes[1].innerText
     if (+item.key < 100) {
       const path = `/${slugify(dir, { replacement: '-', lower: true })}-${
         item.key

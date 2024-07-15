@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { routes, RouteType } from './routes'
 import { useEffect, useState } from 'react'
-import { fetchGameTypes } from '../services/gametypes'
 import slugify from 'slugify'
 import Gametype from '../pages/gametype'
 import { useSelector } from 'react-redux'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import CustomCard from '../../../../../components/common/card'
 import CustomTable from '../../../../../components/common/table'
 import { highlightsColumns } from '../../../../../utils/tableColumns/highlightsColumns'

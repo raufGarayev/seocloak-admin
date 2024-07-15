@@ -44,7 +44,7 @@ export const updateOnlinePartnerAction = (id: number, data: any) => async (dispa
 export const deleteOnlinePartnerAction = (id: number) => async (dispatch: any) => {
     dispatch(sendRequestStart())
     try {
-        const response = await deleteOnlinePartner(id)
+        await deleteOnlinePartner(id)
         dispatch(deleteOnlinePartnerSuccess(id))
     } catch (error) {
         dispatch(sendRequestFailure())

@@ -4,7 +4,7 @@ import CustomTable from '../../../../components/common/table'
 import { onlinePartnersColumns } from '../../../../utils/tableColumns/onlinePartnersColumns'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
-import { createOnlinePartnerAction, deleteOnlinePartnerAction, fetchOnlinePartnersAction, updateOnlinePartnerAction, updateOnlinePartnersOrderAction } from '../../../../store/slices/onlinePartnersSlice/actions'
+import { createOnlinePartnerAction, deleteOnlinePartnerAction, updateOnlinePartnerAction, updateOnlinePartnersOrderAction } from '../../../../store/slices/onlinePartnersSlice/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   clearPartners,
@@ -22,7 +22,6 @@ import {
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { CSS } from '@dnd-kit/utilities'
 import { AiOutlineMenu } from 'react-icons/ai'
-import { message } from 'antd'
 import { toggleModal } from '../../../../store/slices/modalSlices'
 
 const OnlinePartnersTable = () => {

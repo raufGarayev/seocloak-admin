@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { BiSolidBookContent } from 'react-icons/bi';
-import { FaHandshake, FaHome, FaPhone, FaToolbox, FaUser } from 'react-icons/fa';
+import { FaHandshake, FaToolbox} from 'react-icons/fa';
 import { MdTextFields } from 'react-icons/md';
 
 
