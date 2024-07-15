@@ -82,6 +82,7 @@ const SidebarComponent = ({
   }, [location.pathname])
 
   const handleMenuSelect = (item: any) => {
+    console.log("selecting")
     const dir = item.domEvent.currentTarget.innerText
     // const parentDir = item.domEvent.currentTarget.childNodes[1].innerText
     if (+item.key < 100) {
@@ -103,8 +104,8 @@ const SidebarComponent = ({
         mode='inline'
         defaultSelectedKeys={['1']}
         selectedKeys={[selectedKey]}
-        onSelect={handleMenuSelect}
         items={localMenus}
+        onClick={handleMenuSelect}
       />
     </Sider>
   )

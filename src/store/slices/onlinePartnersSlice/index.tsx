@@ -6,6 +6,7 @@ const initialOnlinePartnersState = {
     onlinePartners: [],
     loading: false,
     selectedOnlinePartner: null,
+    selectedOnlinePartners: []
 }
 
 export const onlinePartnersSlice = createSlice({
@@ -56,7 +57,10 @@ export const onlinePartnersSlice = createSlice({
         },
         clearPartners: (state) => {
             state.onlinePartners = []
-        }
+        },
+        setSelectedOnlinePartners: (state, action) => {
+            state.selectedOnlinePartners = action.payload
+        },
     }
 })
 
@@ -71,5 +75,6 @@ export const {
     updateOnlinePartnersOrderSuccess,
     updateOnlinePartnerSuccess,
     deleteOnlinePartnerSuccess,
-    clearPartners
+    clearPartners,
+    setSelectedOnlinePartners
 } = onlinePartnersSlice.actions

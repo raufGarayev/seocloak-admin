@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import CustomCard from '../../../../components/common/card'
 import CustomTable from '../../../../components/common/table'
 import { onlinePartnersColumns } from '../../../../utils/tableColumns/onlinePartnersColumns'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
-import { createOnlinePartnerAction, deleteOnlinePartnerAction, updateOnlinePartnerAction, updateOnlinePartnersOrderAction } from '../../../../store/slices/onlinePartnersSlice/actions'
+import {
+  createOnlinePartnerAction,
+  deleteOnlinePartnerAction,
+  updateOnlinePartnerAction,
+  updateOnlinePartnersOrderAction
+} from '../../../../store/slices/onlinePartnersSlice/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   clearPartners,
   setOnlinePartners,
-  setSelectedOnlinePartner
+  setSelectedOnlinePartner,
+  setSelectedOnlinePartners
 } from '../../../../store/slices/onlinePartnersSlice'
 import { IOnlinePartner } from '../../../../types/onlinePartners'
 import { DndContext } from '@dnd-kit/core'
@@ -23,12 +29,16 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { CSS } from '@dnd-kit/utilities'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { toggleModal } from '../../../../store/slices/modalSlices'
+import { Button, Tooltip } from 'antd'
+import { FaCopy, FaTrash } from 'react-icons/fa'
+import { IoCopy } from 'react-icons/io5'
+import './onlinePartnersTable.sass'
 
 const OnlinePartnersTable = () => {
+  const [multiSelectMode, setMultiSelectMode] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
-  const { gameTypeId, onlinePartners, loading } = useSelector(
-    (state: IRootStore) => state.onlinePartners
-  )
+  const { gameTypeId, onlinePartners, loading, selectedOnlinePartners } =
+    useSelector((state: IRootStore) => state.onlinePartners)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -47,12 +57,14 @@ const OnlinePartnersTable = () => {
         (i: IOnlinePartner) => i.order === over.id
       )
 
-      const newOrderedPartners = arrayMove(onlinePartners, oldIndex, newIndex).map(
-        (item: IOnlinePartner, index: number) => ({
-          ...item,
-          order: index + 1
-        })
-      )
+      const newOrderedPartners = arrayMove(
+        onlinePartners,
+        oldIndex,
+        newIndex
+      ).map((item: IOnlinePartner, index: number) => ({
+        ...item,
+        order: index + 1
+      }))
 
       // setLocalStores(newStores.sort((a, b) => a.order_number - b.order_number));
       dispatch(setOnlinePartners(newOrderedPartners))
@@ -61,48 +73,7 @@ const OnlinePartnersTable = () => {
     }
   }
 
-  const Row = ({ children, ...props }: any) => {
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      setActivatorNodeRef,
-      transform,
-      transition,
-      isDragging
-    } = useSortable({
-      id: props['data-row-key']
-    })
-
-    const style = {
-      ...props.style,
-      transform: CSS.Transform.toString(
-        transform && { ...transform, scaleY: 1 }
-      ),
-      transition,
-      ...(isDragging ? { position: 'relative', zIndex: 999 } : {})
-    }
-
-    return (
-      <tr {...props} ref={setNodeRef} style={style} {...attributes}>
-        {React.Children.map(children, child => {
-          if ((child as React.ReactElement).key === 'sort') {
-            return React.cloneElement(child as React.ReactElement, {
-              children: (
-                <AiOutlineMenu
-                  //@ts-ignore
-                  ref={setActivatorNodeRef}
-                  style={{ touchAction: 'none', cursor: 'move' }}
-                  {...listeners}
-                />
-              )
-            })
-          }
-          return child
-        })}
-      </tr>
-    )
-  }
+  
 
   const handleEditOnPartner = (partner: any) => {
     // dispatch(setSelectedOnlinePartner(partner))
@@ -118,12 +89,14 @@ const OnlinePartnersTable = () => {
   }
 
   const handleCopyHere = (partner: any) => {
-    console.log(partner)
-    dispatch(createOnlinePartnerAction({
-      ...partner,
-      highlights: partner.highlights.map((highlight: any) => highlight.id),
-      id: undefined
-    }))
+    dispatch(
+      createOnlinePartnerAction({
+        ...partner,
+        highlights: partner.highlights.map((highlight: any) => highlight.id),
+        id: undefined,
+        gametype: partner.gametype?.id ? partner.gametype.id : partner.gametype
+      })
+    )
   }
 
   const handleCopyAnywhere = (partner: any) => {
@@ -131,8 +104,60 @@ const OnlinePartnersTable = () => {
     dispatch(toggleModal('edit'))
   }
 
+  const handleSelect = useCallback((selectedRowKeys: any, status: boolean) => {
+    console.log('status', status)
+    if (selectedRowKeys !== 'all') {
+      if (status) {
+        dispatch(
+          setSelectedOnlinePartners([
+            ...selectedOnlinePartners,
+            selectedRowKeys
+          ])
+        )
+      } else {
+        dispatch(
+          setSelectedOnlinePartners(
+            selectedOnlinePartners.filter(
+              (partner: any) => partner !== selectedRowKeys
+            )
+          )
+        )
+      }
+    } else {
+      if (status) {
+        dispatch(setSelectedOnlinePartners(onlinePartners))
+      } else {
+        dispatch(setSelectedOnlinePartners([]))
+      }
+    }
+  }, [selectedOnlinePartners])
+
   return (
     <CustomCard>
+      <div className='btnsContainer'>
+        <Button onClick={() => setMultiSelectMode(!multiSelectMode)}>
+          Multi select
+        </Button>
+        {multiSelectMode && (
+          <>
+            <Tooltip title='Delete selected'>
+              <div className='btnsContainer__btn'>
+                <FaTrash className='deleteIcon' />
+              </div>
+            </Tooltip>
+            <Tooltip title='Copy selected here'>
+              <div className='btnsContainer__btn'>
+                <FaCopy className='copyIcon' />
+              </div>
+            </Tooltip>
+            <div className='btnsContainer__btn'>
+              <Tooltip title='Copy selected anywhere'>
+                <IoCopy className='copyIcon' />
+              </Tooltip>
+            </div>
+          </>
+        )}
+      </div>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext
           items={onlinePartners.map((i: IOnlinePartner) => i.order)}
@@ -144,7 +169,11 @@ const OnlinePartnersTable = () => {
               handleDelOnPartner,
               handleOnPartnerStatus,
               handleCopyHere,
-              handleCopyAnywhere
+              handleCopyAnywhere,
+              handleSelect,
+              multiSelectMode,
+              setMultiSelectMode,
+              selectedOnlinePartners
             )}
             data={onlinePartners}
             loading={loading}
@@ -160,5 +189,48 @@ const OnlinePartnersTable = () => {
     </CustomCard>
   )
 }
+
+const Row = memo(({ children, ...props }: any) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: props['data-row-key']
+  })
+
+  const style = {
+    ...props.style,
+    transform: CSS.Transform.toString(
+      transform && { ...transform, scaleY: 1 }
+    ),
+    transition,
+    ...(isDragging ? { position: 'relative', zIndex: 999 } : {})
+  }
+
+  return (
+    <tr {...props} ref={setNodeRef} style={style} {...attributes}>
+      {React.Children.map(children, child => {
+        if ((child as React.ReactElement).key === 'sort') {
+          return React.cloneElement(child as React.ReactElement, {
+            children: (
+              <AiOutlineMenu
+                //@ts-ignore
+                ref={setActivatorNodeRef}
+                style={{ touchAction: 'none', cursor: 'move' }}
+                {...listeners}
+              />
+            )
+          })
+        }
+        return child
+      })}
+    </tr>
+  )
+})
 
 export default OnlinePartnersTable

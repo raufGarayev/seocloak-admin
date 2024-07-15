@@ -1,3 +1,4 @@
+import { IGametype } from "./gametypes";
 import { IHighlight } from "./highlights";
 
 export interface IOnlinePartnersState {
@@ -5,6 +6,7 @@ export interface IOnlinePartnersState {
     onlinePartners: IOnlinePartner[],
     loading: boolean,
     selectedOnlinePartner: IOnlinePartner | null,
+    selectedOnlinePartners: IOnlinePartner[]
 }
 
 export interface IOnlinePartner {
@@ -19,5 +21,5 @@ export interface IOnlinePartner {
     isMobile: boolean;
     review: string;
     order: number;
-    gameTypeId: number;
+    gametype: IGametype | number | null;
 }

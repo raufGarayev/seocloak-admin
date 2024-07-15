@@ -21,6 +21,8 @@ const OnlinePartnerCopyModal = () => {
         ...selectedOnlinePartner,
         id: undefined,
         highlights: selectedOnlinePartner?.highlights?.map(highlight => highlight.id),
+        //@ts-ignore
+        gametype: selectedOnlinePartner?.gametype?.id || selectedOnlinePartner?.gametype
     })).then(() => {
       dispatch(toggleModal(''))
       dispatch(setSelectedOnlinePartner(null))

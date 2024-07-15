@@ -1,18 +1,22 @@
 import { FaCheckCircle, FaCopy, FaEdit, FaTrash } from 'react-icons/fa'
 import '../../styles/columns.sass'
 import { MdBlock } from 'react-icons/md'
-import { Dropdown } from 'antd'
-import type { MenuProps } from 'antd';
-import { IoCopy } from 'react-icons/io5';
+import { Checkbox, Dropdown } from 'antd'
+import type { MenuProps } from 'antd'
+import { IoCopy } from 'react-icons/io5'
 
 export const onlinePartnersColumns = (
   handleEditOnPartner: (partner: any) => void,
   handleDelOnPartner: (partner: any) => void,
   handleOnPartnerStatus: (partner: any) => void,
   handleCopyHere: (partner: any) => void,
-  handleCopyAnywhere: (partner: any) => void
+  handleCopyAnywhere: (partner: any) => void,
+  handleSelect: (partner: any, status: boolean) => void,
+  multiSelectMode: boolean,
+  setMultiSelectMode: (value: boolean) => void,
+  selectedOnlinePartners: any,
 ) => {
-  return [
+  const columns = [
     {
       key: 'sort'
     },
@@ -32,7 +36,8 @@ export const onlinePartnersColumns = (
             alt='partner logo'
           />
         </div>
-      )
+      ),
+      width: '35%'
     },
     {
       title: <span className='columnName'>Status</span>,
@@ -48,7 +53,11 @@ export const onlinePartnersColumns = (
           {
             label: partner.status ? 'Disable' : 'Activate',
             key: '1',
-            icon: partner.status ? <MdBlock className='disableIcon' /> : <FaCheckCircle className='activateIcon' />,
+            icon: partner.status ? (
+              <MdBlock className='disableIcon' />
+            ) : (
+              <FaCheckCircle className='activateIcon' />
+            ),
             onClick: () => handleOnPartnerStatus(partner),
             style: { color: partner.status ? 'black' : 'green' }
           },
@@ -57,49 +66,63 @@ export const onlinePartnersColumns = (
             key: '3',
             icon: <FaTrash />,
             danger: true,
-            onClick: () => handleDelOnPartner(partner),
+            onClick: () => handleDelOnPartner(partner)
           },
           {
             label: 'Copy here',
             key: '4',
             icon: <FaCopy className='copyIcon' />,
-            style: { color: 'blue'},
+            style: { color: 'blue' },
             onClick: () => handleCopyHere(partner)
           },
           {
             label: 'Copy anywhere',
             key: '5',
             icon: <IoCopy className='copyIcon' />,
-            style: { color: 'blue'},
+            style: { color: 'blue' },
             onClick: () => handleCopyAnywhere(partner)
           }
-        ];
+        ]
 
-        
         const menuProps = {
-          items,
-        };
+          items
+        }
         return (
-        
-          <Dropdown.Button menu={menuProps} onClick={() => handleEditOnPartner(partner)}>
+          <Dropdown.Button
+            menu={menuProps}
+            onClick={() => handleEditOnPartner(partner)}
+          >
             <FaEdit
               onClick={() => handleEditOnPartner(partner)}
               className='editIcon'
             />
-          </Dropdown.Button> 
+          </Dropdown.Button>
         )
       },
       width: '15%'
     }
-  ]
+  ];
+
+  if (multiSelectMode) {
+    columns.unshift({
+      key: 'select',
+      title:
+        <Checkbox
+          onChange={e => handleSelect('all', e.target.checked)}
+        />,
+      render: (partner: any) => <Checkbox
+      onChange={e => handleSelect(partner, e.target.checked)}
+      checked={selectedOnlinePartners.includes(partner)}
+    />,
+      width: '15%'
+    });
+  }
+
+  return columns;
 }
 
-
-
-
-
-
-{/* <div style={{ display: 'flex', gap: 7 }}>
+{
+  /* <div style={{ display: 'flex', gap: 7 }}>
           <Tooltip title='Edit'>
             <FaEdit
               onClick={() => handleEditOnPartner(partner)}
@@ -122,4 +145,5 @@ export const onlinePartnersColumns = (
               <FaCheckCircle className='activateIcon' onClick={() => handleOnPartnerStatus(partner)} />
             </Tooltip>
           )}
-        </div> */}
+        </div> */
+}
