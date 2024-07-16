@@ -5,13 +5,13 @@ import { onlinePartnersColumns } from '../../../../utils/tableColumns/onlinePart
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
 import {
-  createOnlinePartnerAction,
   updateOnlinePartnerAction,
   updateOnlinePartnersOrderAction
 } from '../../../../store/slices/onlinePartnersSlice/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   clearPartners,
+  setFilters,
   setMultiSelectMode,
   setOnlinePartners,
   setSelectedOnlinePartner,
@@ -36,14 +36,22 @@ import './onlinePartnersTable.sass'
 
 const OnlinePartnersTable = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { gameTypeId, onlinePartners, loading, selectedOnlinePartners, multiSelectMode } =
-    useSelector((state: IRootStore) => state.onlinePartners)
+  const {
+    gameTypeId,
+    onlinePartners,
+    loading,
+    selectedOnlinePartners,
+    multiSelectMode,
+    filters
+  } = useSelector((state: IRootStore) => state.onlinePartners)
   const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
     return () => {
       dispatch(clearPartners())
+      dispatch(setMultiSelectMode(false))
+      dispatch(setFilters({}))
     }
   }, [])
 
@@ -64,16 +72,12 @@ const OnlinePartnersTable = () => {
         ...item,
         order: index + 1
       }))
-
-      // setLocalStores(newStores.sort((a, b) => a.order_number - b.order_number));
       dispatch(setOnlinePartners(newOrderedPartners))
       dispatch(updateOnlinePartnersOrderAction(newOrderedPartners, gameTypeId))
-      console.log('newOrderedPartners', newOrderedPartners)
     }
   }
 
   const handleEditOnPartner = (partner: any) => {
-    // dispatch(setSelectedOnlinePartner(partner))
     navigate(location.pathname + '/' + partner.id)
   }
 
@@ -87,19 +91,13 @@ const OnlinePartnersTable = () => {
   }
 
   const handleCopyHere = (partner: any) => {
-    dispatch(
-      createOnlinePartnerAction({
-        ...partner,
-        highlights: partner.highlights.map((highlight: any) => highlight.id),
-        id: undefined,
-        gametype: partner.gametype?.id ? partner.gametype.id : partner.gametype
-      })
-    )
+    dispatch(setSelectedOnlinePartner(partner))
+    dispatch(toggleModal({ type: 'copyhe', hint: 'single' }))
   }
 
   const handleCopyAnywhere = (partner: any) => {
     dispatch(setSelectedOnlinePartner(partner))
-    dispatch(toggleModal({ type: 'edit' }))
+    dispatch(toggleModal({ type: 'copyan', hint: 'single' }))
   }
 
   const handleSelect = (selectedRowKeys: any, status: boolean) => {
@@ -130,31 +128,26 @@ const OnlinePartnersTable = () => {
     }
   }
 
-
   const handleMultiDel = () => {
     dispatch(toggleModal({ type: 'del', hint: 'multi' }))
   }
 
   const handleMultiCopyHere = () => {
-    dispatch(createOnlinePartnerAction(selectedOnlinePartners.map((partner: any) => ({
-      ...partner,
-      highlights: partner.highlights.map((highlight: any) => highlight.id),
-      id: undefined,
-      gametype: partner.gametype?.id ? partner.gametype.id : partner.gametype
-    })))).then(() => {
-      dispatch(setSelectedOnlinePartners([]))
-      dispatch(setMultiSelectMode(false))
-    })
+    dispatch(toggleModal({ type: 'copyhe', hint: 'multi' }))
   }
 
   const handleMultiCopyAnywhere = () => {
-    dispatch(toggleModal({ type: 'edit', hint: 'multi' }))
+    dispatch(toggleModal({ type: 'copyan', hint: 'multi' }))
+  }
+
+  const handleFilter = (key: string, value: string | null) => {
+    dispatch(setFilters({...filters, [key]: value}))
   }
 
   return (
     <CustomCard>
       <div className='btnsContainer'>
-        <Button onClick={() => dispatch(setMultiSelectMode(!multiSelectMode))}>
+        <Button onClick={() => dispatch(setMultiSelectMode(!multiSelectMode))} disabled={onlinePartners.length === 0}>
           Multi select
         </Button>
         {multiSelectMode && (
@@ -170,7 +163,10 @@ const OnlinePartnersTable = () => {
               </div>
             </Tooltip>
             <Tooltip title='Copy selected anywhere'>
-              <div className='btnsContainer__btn' onClick={handleMultiCopyAnywhere}>
+              <div
+                className='btnsContainer__btn'
+                onClick={handleMultiCopyAnywhere}
+              >
                 <IoCopy className='copyIcon' />
               </div>
             </Tooltip>
@@ -192,7 +188,8 @@ const OnlinePartnersTable = () => {
               handleSelect,
               multiSelectMode,
               selectedOnlinePartners,
-              onlinePartners
+              onlinePartners,
+              handleFilter
             )}
             data={onlinePartners}
             loading={loading}

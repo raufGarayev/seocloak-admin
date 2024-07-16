@@ -7,7 +7,11 @@ const initialOnlinePartnersState = {
     loading: false,
     selectedOnlinePartner: null,
     selectedOnlinePartners: [],
-    multiSelectMode: false
+    multiSelectMode: false,
+    filters: {
+        status: null,
+        isMobile: null
+    }
 }
 
 export const onlinePartnersSlice = createSlice({
@@ -28,12 +32,11 @@ export const onlinePartnersSlice = createSlice({
             state.loading = false
         },
         createOnlinePartnerSuccess(state, action) {
-            if(Array.isArray(action.payload)) {
-                state.onlinePartners = state.onlinePartners.concat(action.payload)
-            } else {
-                state.onlinePartners.push(action.payload)
-            }
-            state.loading = false
+            const newPartners = Array.isArray(action.payload) ? action.payload : [action.payload];
+            const filteredPartners = newPartners.filter(partner => partner.gametype.id === state.gameTypeId);
+        
+            state.onlinePartners = state.onlinePartners.concat(filteredPartners);
+            state.loading = false;
         },
         setSelectedOnlinePartner(state, action) {
             state.selectedOnlinePartner = action.payload
@@ -73,6 +76,9 @@ export const onlinePartnersSlice = createSlice({
         },
         setMultiSelectMode: (state, action) => {
             state.multiSelectMode = action.payload
+        },
+        setFilters: (state, action) => {
+            state.filters = action.payload
         }
     }
 })
@@ -90,5 +96,6 @@ export const {
     deleteOnlinePartnerSuccess,
     clearPartners,
     setSelectedOnlinePartners,
-    setMultiSelectMode
+    setMultiSelectMode,
+    setFilters
 } = onlinePartnersSlice.actions

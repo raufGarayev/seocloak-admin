@@ -16,7 +16,7 @@ export const modalSlice = createSlice({
         state.type = ''
         state.hint = ''
       } else {
-        state.isOpen = !state.isOpen
+        state.isOpen = action.payload.isOpen || !state.isOpen
         state.type = action.payload.type
         if (action.payload.hint) {
           state.hint = action.payload.hint

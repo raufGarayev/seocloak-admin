@@ -1,10 +1,11 @@
 import { createOnlinePartnerSuccess, deleteOnlinePartnerSuccess, fetchOnlinePartnersSuccess, sendRequestFailure, sendRequestStart, setSelectedOnlinePartner, updateOnlinePartnersOrderSuccess, updateOnlinePartnerSuccess } from ".."
+import { cleanObject } from "../../../../helpers"
 import { createOnlinePartner, deleteOnlinePartner, fetchOnlinePartners, getOnlinePartner, updateOnlinePartner, updateOnlinePartnersOrder } from "../../../../services/onlinePartners"
 
-export const fetchOnlinePartnersAction = (gameTypeId: number) => async (dispatch: any) => {
+export const fetchOnlinePartnersAction = (gameTypeId: number, filters: any) => async (dispatch: any) => {
     dispatch(sendRequestStart())
     try {
-        const response = await fetchOnlinePartners(gameTypeId)
+        const response = await fetchOnlinePartners(gameTypeId, cleanObject(filters))
         dispatch(fetchOnlinePartnersSuccess(response))
     } catch (error) {
         dispatch(sendRequestFailure())

@@ -7,7 +7,11 @@ export interface IOnlinePartnersState {
     loading: boolean,
     selectedOnlinePartner: IOnlinePartner | null,
     selectedOnlinePartners: IOnlinePartner[],
-    multiSelectMode: boolean
+    multiSelectMode: boolean,
+    filters: {
+        status: boolean | null,
+        isMobile: boolean | null
+    }
 }
 
 export interface IOnlinePartner {

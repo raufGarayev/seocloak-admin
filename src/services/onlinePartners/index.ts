@@ -1,8 +1,8 @@
 import { axiosInstance } from "../api";
 
-export const fetchOnlinePartners = async (gameTypeId: number) => {
+export const fetchOnlinePartners = async (gameTypeId: number, filters: any) => {
     try {
-        const response = await axiosInstance.get(`/online-partners?gametypeId=${gameTypeId}`);
+        const response = await axiosInstance.get(`/online-partners?gametypeId=${gameTypeId}`, { params: filters });
         return response.data;
     } catch (error) {
         throw error;

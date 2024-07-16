@@ -23,6 +23,7 @@ import {
 import './onlinePartnerForm.sass'
 import FormItem from 'antd/es/form/FormItem'
 import { setSelectedOnlinePartner } from '../../../../store/slices/onlinePartnersSlice'
+import slugify from 'slugify'
 
 const OnlinePartnerForm = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -97,6 +98,11 @@ const OnlinePartnerForm = () => {
     }
   }
 
+  const handleCancel = () => {
+    //@ts-ignore
+    navigate(`/${slugify(gametypes.find(gametype => gametype.id === gameTypeId)?.name, {lower: true})}-${gameTypeId}`)
+  }
+
   return (
     <CustomCard>
       <Skeleton loading={loading}>
@@ -121,9 +127,7 @@ const OnlinePartnerForm = () => {
               />
             </Form.Item>
             <FormItem label='Gametype' name='gametype'>
-              <Select
-                mode={id === '0' ? 'multiple' : undefined}
-              >
+              <Select mode={id === '0' ? 'multiple' : undefined}>
                 {gametypes.map(gametype => (
                   <Select.Option key={gametype.id} value={gametype.id}>
                     {gametype.name}
@@ -183,8 +187,11 @@ const OnlinePartnerForm = () => {
             <JoditEditor value={form.getFieldValue('text')} />
           </Form.Item>
           <div className='contentBtns'>
+            <Button className='cancelBtn' onClick={handleCancel}>
+              Cancel
+            </Button>
+
             <Form.Item>
-              <Button className='cancelBtn'>Cancel</Button>
               <Button className='saveBtn' htmlType='submit'>
                 Save
               </Button>

@@ -9,13 +9,16 @@ import { fetchOnlinePartnersAction } from '../../store/slices/onlinePartnersSlic
 import OnlinePartnerCopyModal from './components/onlinePartnersCopyModal'
 
 const Gametype = () => {
+  const [isActive, setIsActive] = useState<boolean>(true)
   const [pageName, setPageName] = useState<string>('Something')
   const { gametypes } = useSelector((state: IRootStore) => state.gametypes)
+  const {filters} = useSelector((state: IRootStore) => state.onlinePartners)
   const dispatch = useDispatch<AppDispatch>()
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
+    if(isActive) return;
     const pathSegments = location.pathname.split('/')
     const lastSegment = pathSegments[pathSegments.length - 1]
 
@@ -27,9 +30,17 @@ const Gametype = () => {
       gameType => gameType.id === Number(number)
     )
 
-    dispatch(fetchOnlinePartnersAction(Number(number)))
+    dispatch(fetchOnlinePartnersAction(Number(number), filters))
     dispatch(setGameTypeID(Number(number)))
-    setPageName(selectedGameType ? selectedGameType.name : 'Test')
+    setPageName(selectedGameType ? selectedGameType.name : 'Slots')
+  }, [filters, isActive])
+
+  useEffect(() => {
+    setIsActive(false)
+
+    return () => {
+      setIsActive(true)
+    }
   }, [])
 
   const handleNewOnlinePartner = () => {
