@@ -25,12 +25,12 @@ const PartnersTable = () => {
 
   const handleEditPartner = (partner: IPartner) => {
     dispatch(setSelectedPartner(partner))
-    dispatch(toggleModal('edit'))
+    dispatch(toggleModal({ type: 'edit' }))
   }
 
   const handleDeletePartner = (partner: IPartner) => {
     dispatch(setSelectedPartner(partner))
-    dispatch(toggleModal('del'))
+    dispatch(toggleModal({ type: 'del' }))
   }
 
   const handleTableChange = (pagination: any, _: any, __: any) => {

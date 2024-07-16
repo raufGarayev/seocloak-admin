@@ -30,7 +30,7 @@ const ContentsTable = () => {
 
   const handleDelContent = (content: IContent) => {
     dispatch(setSelectedContent(content))
-    dispatch(toggleModal('del'))
+    dispatch(toggleModal({type: 'del'}))
   }
 
   return (

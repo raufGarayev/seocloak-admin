@@ -47,7 +47,7 @@ export const updateOnlinePartnersOrder = async (data: any, gametypeId: number | 
 
 export const deleteOnlinePartner = async (id: number) => {
     try {
-        const response = await axiosInstance.delete(`/online-partners/${id}`);
+        const response = await axiosInstance.delete(`/online-partners/`, { data: { id } });
         return response.data;
     } catch (error) {
         throw error;

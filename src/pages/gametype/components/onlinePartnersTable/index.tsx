@@ -13,6 +13,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   clearPartners,
+  setMultiSelectMode,
   setOnlinePartners,
   setSelectedOnlinePartner,
   setSelectedOnlinePartners
@@ -35,9 +36,8 @@ import { IoCopy } from 'react-icons/io5'
 import './onlinePartnersTable.sass'
 
 const OnlinePartnersTable = () => {
-  const [multiSelectMode, setMultiSelectMode] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
-  const { gameTypeId, onlinePartners, loading, selectedOnlinePartners } =
+  const { gameTypeId, onlinePartners, loading, selectedOnlinePartners, multiSelectMode } =
     useSelector((state: IRootStore) => state.onlinePartners)
   const navigate = useNavigate()
   const location = useLocation()
@@ -73,15 +73,14 @@ const OnlinePartnersTable = () => {
     }
   }
 
-  
-
   const handleEditOnPartner = (partner: any) => {
     // dispatch(setSelectedOnlinePartner(partner))
     navigate(location.pathname + '/' + partner.id)
   }
 
   const handleDelOnPartner = (partner: any) => {
-    dispatch(deleteOnlinePartnerAction(partner.id))
+    dispatch(setSelectedOnlinePartner(partner))
+    dispatch(toggleModal({ type: 'del' }))
   }
 
   const handleOnPartnerStatus = (partner: any) => {
@@ -101,11 +100,10 @@ const OnlinePartnersTable = () => {
 
   const handleCopyAnywhere = (partner: any) => {
     dispatch(setSelectedOnlinePartner(partner))
-    dispatch(toggleModal('edit'))
+    dispatch(toggleModal({ type: 'edit' }))
   }
 
-  const handleSelect = useCallback((selectedRowKeys: any, status: boolean) => {
-    console.log('status', status)
+  const handleSelect = (selectedRowKeys: any, status: boolean) => {
     if (selectedRowKeys !== 'all') {
       if (status) {
         dispatch(
@@ -125,36 +123,58 @@ const OnlinePartnersTable = () => {
       }
     } else {
       if (status) {
+        console.log('it is all: ', onlinePartners)
         dispatch(setSelectedOnlinePartners(onlinePartners))
       } else {
         dispatch(setSelectedOnlinePartners([]))
       }
     }
-  }, [selectedOnlinePartners])
+  }
+
+
+  const handleMultiDel = () => {
+    dispatch(toggleModal({ type: 'del', hint: 'multi' }))
+  }
+
+  const handleMultiCopyHere = () => {
+    dispatch(createOnlinePartnerAction(selectedOnlinePartners.map((partner: any) => ({
+      ...partner,
+      highlights: partner.highlights.map((highlight: any) => highlight.id),
+      id: undefined,
+      gametype: partner.gametype?.id ? partner.gametype.id : partner.gametype
+    })))).then(() => {
+      dispatch(setSelectedOnlinePartners([]))
+      dispatch(setMultiSelectMode(false))
+    })
+  }
+
+  const handleMultiCopyAnywhere = () => {
+    dispatch(toggleModal({ type: 'edit', hint: 'multi' }))
+  }
 
   return (
     <CustomCard>
       <div className='btnsContainer'>
-        <Button onClick={() => setMultiSelectMode(!multiSelectMode)}>
+        <Button onClick={() => dispatch(setMultiSelectMode(!multiSelectMode))}>
           Multi select
         </Button>
         {multiSelectMode && (
           <>
             <Tooltip title='Delete selected'>
-              <div className='btnsContainer__btn'>
+              <div className='btnsContainer__btn' onClick={handleMultiDel}>
                 <FaTrash className='deleteIcon' />
               </div>
             </Tooltip>
             <Tooltip title='Copy selected here'>
-              <div className='btnsContainer__btn'>
+              <div className='btnsContainer__btn' onClick={handleMultiCopyHere}>
                 <FaCopy className='copyIcon' />
               </div>
             </Tooltip>
-            <div className='btnsContainer__btn'>
-              <Tooltip title='Copy selected anywhere'>
+            <Tooltip title='Copy selected anywhere'>
+              <div className='btnsContainer__btn' onClick={handleMultiCopyAnywhere}>
                 <IoCopy className='copyIcon' />
-              </Tooltip>
-            </div>
+              </div>
+            </Tooltip>
           </>
         )}
       </div>
@@ -172,8 +192,8 @@ const OnlinePartnersTable = () => {
               handleCopyAnywhere,
               handleSelect,
               multiSelectMode,
-              setMultiSelectMode,
-              selectedOnlinePartners
+              selectedOnlinePartners,
+              onlinePartners
             )}
             data={onlinePartners}
             loading={loading}
@@ -205,9 +225,7 @@ const Row = memo(({ children, ...props }: any) => {
 
   const style = {
     ...props.style,
-    transform: CSS.Transform.toString(
-      transform && { ...transform, scaleY: 1 }
-    ),
+    transform: CSS.Transform.toString(transform && { ...transform, scaleY: 1 }),
     transition,
     ...(isDragging ? { position: 'relative', zIndex: 999 } : {})
   }

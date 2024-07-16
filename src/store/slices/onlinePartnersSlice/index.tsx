@@ -6,7 +6,8 @@ const initialOnlinePartnersState = {
     onlinePartners: [],
     loading: false,
     selectedOnlinePartner: null,
-    selectedOnlinePartners: []
+    selectedOnlinePartners: [],
+    multiSelectMode: false
 }
 
 export const onlinePartnersSlice = createSlice({
@@ -27,7 +28,11 @@ export const onlinePartnersSlice = createSlice({
             state.loading = false
         },
         createOnlinePartnerSuccess(state, action) {
-            state.onlinePartners.push(action.payload)
+            if(Array.isArray(action.payload)) {
+                state.onlinePartners = state.onlinePartners.concat(action.payload)
+            } else {
+                state.onlinePartners.push(action.payload)
+            }
             state.loading = false
         },
         setSelectedOnlinePartner(state, action) {
@@ -49,10 +54,15 @@ export const onlinePartnersSlice = createSlice({
             state.loading = false
         },
         deleteOnlinePartnerSuccess: (state, action) => {
-            console.log("payloadL ", action.payload)
-            state.onlinePartners = state.onlinePartners.filter(
-                partner => partner.id !== action.payload
-            )
+            if(Array.isArray(action.payload)) {
+                state.onlinePartners = state.onlinePartners.filter(
+                    partner => !action.payload.includes(partner.id)
+                )
+            } else {
+                state.onlinePartners = state.onlinePartners.filter(
+                    partner => partner.id !== action.payload
+                )
+            }
             state.loading = false
         },
         clearPartners: (state) => {
@@ -61,6 +71,9 @@ export const onlinePartnersSlice = createSlice({
         setSelectedOnlinePartners: (state, action) => {
             state.selectedOnlinePartners = action.payload
         },
+        setMultiSelectMode: (state, action) => {
+            state.multiSelectMode = action.payload
+        }
     }
 })
 
@@ -76,5 +89,6 @@ export const {
     updateOnlinePartnerSuccess,
     deleteOnlinePartnerSuccess,
     clearPartners,
-    setSelectedOnlinePartners
+    setSelectedOnlinePartners,
+    setMultiSelectMode
 } = onlinePartnersSlice.actions

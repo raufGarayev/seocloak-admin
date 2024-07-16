@@ -10,7 +10,7 @@ const Partners = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const handlePartnerAdd = () => {
-    dispatch(toggleModal('add'))
+    dispatch(toggleModal({type: 'add'}))
   }
 
   return (

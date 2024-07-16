@@ -20,12 +20,12 @@ const HighlightsTable = () => {
 
     const handleEditHighlight = (hghlght: IHighlight) => {
         dispatch(setSelectedHighlight(hghlght))
-        dispatch(toggleModal('edit'))
+        dispatch(toggleModal({type: 'edit'}))
     }
 
     const handleDelHighlight = (hghlght: IHighlight) => {
         dispatch(setSelectedHighlight(hghlght))
-        dispatch(toggleModal('del'))
+        dispatch(toggleModal({type: 'del'}))
     }
 
   return (

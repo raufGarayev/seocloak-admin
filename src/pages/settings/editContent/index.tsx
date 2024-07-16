@@ -58,7 +58,7 @@ const EditContent = () => {
           type: Number(form.getFieldValue('type'))
         })
       ).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedContent(null))
         form.resetFields()
         navigate(-1)
@@ -71,7 +71,7 @@ const EditContent = () => {
           type: Number(form.getFieldValue('type'))
         })
       ).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedContent(null))
         form.resetFields()
         navigate(-1)

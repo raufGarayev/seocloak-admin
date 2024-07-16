@@ -20,13 +20,13 @@ const PartnersModal = () => {
   const handleModalSubmit = () => {
     if (type === 'add') {
       dispatch(createPartnerAction(selectedPartner)).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedPartner(null))
         form.resetFields()
       })
     } else if (type === 'edit') {
       dispatch(updatePartnerAction(selectedPartner)).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedPartner(null))
         form.resetFields()
       })
@@ -35,7 +35,7 @@ const PartnersModal = () => {
       if (selectedPartner) {
         console.log("dsds")
         dispatch(deletePartnerAction(selectedPartner.id)).then(() => {
-          dispatch(toggleModal(''))
+          dispatch(toggleModal(null))
           dispatch(setSelectedPartner(null))
           form.resetFields()
         })
@@ -44,7 +44,7 @@ const PartnersModal = () => {
   }
 
   const handleModalCancel = () => {
-    dispatch(toggleModal(''))
+    dispatch(toggleModal(null))
     dispatch(setSelectedPartner(null))
     form.resetFields()
   }

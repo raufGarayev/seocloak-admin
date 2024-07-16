@@ -9,7 +9,7 @@ const Highlights = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const handleAddBtnClick = () => {
-        dispatch(toggleModal('add'))
+        dispatch(toggleModal({type: 'add'}))
     }
 
   return (

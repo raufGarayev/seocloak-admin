@@ -6,7 +6,8 @@ export interface IOnlinePartnersState {
     onlinePartners: IOnlinePartner[],
     loading: boolean,
     selectedOnlinePartner: IOnlinePartner | null,
-    selectedOnlinePartners: IOnlinePartner[]
+    selectedOnlinePartners: IOnlinePartner[],
+    multiSelectMode: boolean
 }
 
 export interface IOnlinePartner {

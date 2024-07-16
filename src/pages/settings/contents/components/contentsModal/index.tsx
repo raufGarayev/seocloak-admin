@@ -25,7 +25,7 @@ const ContentsModal = () => {
           type: Number(selectedContent?.type)
         })
       ).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedContent(null))
         form.resetFields()
       })
@@ -36,7 +36,7 @@ const ContentsModal = () => {
           type: Number(selectedContent?.type)
         })
       ).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedContent(null))
         form.resetFields()
       })
@@ -44,7 +44,7 @@ const ContentsModal = () => {
   }
 
   const handleModalCancel = () => {
-    dispatch(toggleModal(''))
+    dispatch(toggleModal(null))
     dispatch(setSelectedContent(null))
     form.resetFields()
   }

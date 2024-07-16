@@ -23,20 +23,20 @@ const HighlightsModal = () => {
   const handleModalSubmit = () => {
     if (type === 'add') {
       dispatch(createHighlightsAction(selectedHighlight)).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedHighlight(null))
         form.resetFields()
       })
     } else if (type === 'edit') {
       dispatch(updateHighlightsAction(selectedHighlight)).then(() => {
-        dispatch(toggleModal(''))
+        dispatch(toggleModal(null))
         dispatch(setSelectedHighlight(null))
         form.resetFields()
       })
     } else {
       if (selectedHighlight) {
         dispatch(deleteHighlightsAction(selectedHighlight.id)).then(() => {
-          dispatch(toggleModal(''))
+          dispatch(toggleModal(null))
           dispatch(setSelectedHighlight(null))
           form.resetFields()
         })
@@ -45,7 +45,7 @@ const HighlightsModal = () => {
   }
 
   const handleModalCancel = () => {
-    dispatch(toggleModal(''))
+    dispatch(toggleModal(null))
     dispatch(setSelectedHighlight(null))
     form.resetFields()
   }

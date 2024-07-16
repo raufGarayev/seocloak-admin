@@ -13,10 +13,15 @@ export const onlinePartnersColumns = (
   handleCopyAnywhere: (partner: any) => void,
   handleSelect: (partner: any, status: boolean) => void,
   multiSelectMode: boolean,
-  setMultiSelectMode: (value: boolean) => void,
   selectedOnlinePartners: any,
+  onlinePartners: any
 ) => {
-  const columns = [
+  const columns: {
+    key?: string;
+    title?: JSX.Element | string;
+    render?: (text: any, record: any, index: number) => JSX.Element;
+    width?: string;
+  }[] = [
     {
       key: 'sort'
     },
@@ -106,10 +111,11 @@ export const onlinePartnersColumns = (
   if (multiSelectMode) {
     columns.unshift({
       key: 'select',
-      title:
-        <Checkbox
-          onChange={e => handleSelect('all', e.target.checked)}
-        />,
+      title: 
+      <Checkbox
+        onChange={e => handleSelect('all', e.target.checked)}
+        checked={selectedOnlinePartners.length === onlinePartners.length}
+      />,
       render: (partner: any) => <Checkbox
       onChange={e => handleSelect(partner, e.target.checked)}
       checked={selectedOnlinePartners.includes(partner)}
@@ -121,29 +127,3 @@ export const onlinePartnersColumns = (
   return columns;
 }
 
-{
-  /* <div style={{ display: 'flex', gap: 7 }}>
-          <Tooltip title='Edit'>
-            <FaEdit
-              onClick={() => handleEditOnPartner(partner)}
-              className='editIcon'
-            />
-          </Tooltip>
-          <Tooltip title='Delete'>
-            <FaTrash
-              onClick={() => handleDelOnPartner(partner)}
-              className='deleteIcon'
-            />
-          </Tooltip>
-
-          {partner.status ? (
-            <Tooltip title='Disable'>
-              <MdBlock className='disableIcon' onClick={() => handleOnPartnerStatus(partner)} />
-            </Tooltip>
-          ) : (
-            <Tooltip title='Activate'>
-              <FaCheckCircle className='activateIcon' onClick={() => handleOnPartnerStatus(partner)} />
-            </Tooltip>
-          )}
-        </div> */
-}
