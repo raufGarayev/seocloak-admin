@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import CustomCard from '../../../../components/common/card'
 import CustomTable from '../../../../components/common/table'
 import { onlinePartnersColumns } from '../../../../utils/tableColumns/onlinePartnersColumns'
@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
 import {
   createOnlinePartnerAction,
-  deleteOnlinePartnerAction,
   updateOnlinePartnerAction,
   updateOnlinePartnersOrderAction
 } from '../../../../store/slices/onlinePartnersSlice/actions'
