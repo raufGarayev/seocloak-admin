@@ -5,7 +5,7 @@ export const getPartners = async (params?: any) => {
     const response = await axiosInstance.get("/partners", { params });
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw error
   }
 };
 
@@ -14,7 +14,7 @@ export const createPartner = async (data: any) => {
     const response = await axiosInstance.post("/partners", data);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw error
   }
 }
 
@@ -23,7 +23,7 @@ export const updatePartner = async (data: any) => {
     const response = await axiosInstance.patch(`/partners/${data.id}`, data);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw error
   }
 }
 
@@ -32,6 +32,6 @@ export const deletePartner = async (id: number) => {
     const response = await axiosInstance.delete(`/partners/${id}`);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw error
   }
 }

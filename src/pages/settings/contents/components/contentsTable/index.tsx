@@ -22,9 +22,7 @@ const ContentsTable = () => {
   }, [])
 
   const handleEditContent = (content: IContent) => {
-    console.log("content")
     dispatch(setSelectedContent(content))
-    // dispatch(toggleModal('edit'))
     navigate(`/settings/contents/${content.id}`)
   }
 

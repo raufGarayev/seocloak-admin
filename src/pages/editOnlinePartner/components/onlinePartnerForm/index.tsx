@@ -6,12 +6,13 @@ import {
   Input,
   InputNumber,
   Select,
-  Skeleton
+  Skeleton,
+  Spin
 } from 'antd'
 import JoditEditor from 'jodit-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchPartnersAction } from '../../../../store/slices/partnersSlices/actions'
 import { fetchHighlightsAction } from '../../../../store/slices/highlightsSlices/actions'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -20,10 +21,11 @@ import {
   getOnlinePartnerAction,
   updateOnlinePartnerAction
 } from '../../../../store/slices/onlinePartnersSlice/actions'
-import './onlinePartnerForm.sass'
 import FormItem from 'antd/es/form/FormItem'
 import { setSelectedOnlinePartner } from '../../../../store/slices/onlinePartnersSlice'
 import slugify from 'slugify'
+import { getLanguages, translate } from '../../../../services/contents'
+import './onlinePartnerForm.sass'
 
 const OnlinePartnerForm = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -36,6 +38,8 @@ const OnlinePartnerForm = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  const [languages, setLanguages] = useState([])
+  const [translateLoading, setTranslateLoading] = useState(false)
 
   useEffect(() => {
     if (id && id !== '0') {
@@ -43,6 +47,14 @@ const OnlinePartnerForm = () => {
     }
     dispatch(fetchPartnersAction({ limit: 1000 }))
     dispatch(fetchHighlightsAction())
+    getLanguages().then(res => {
+      setLanguages(
+        res.map((lang: any) => ({
+          label: lang.name,
+          value: lang.code
+        }))
+      )
+    })
 
     return () => {
       dispatch(setSelectedOnlinePartner(null))
@@ -99,8 +111,28 @@ const OnlinePartnerForm = () => {
   }
 
   const handleCancel = () => {
-    //@ts-ignore
-    navigate(`/${slugify(gametypes.find(gametype => gametype.id === gameTypeId)?.name, {lower: true})}-${gameTypeId}`)
+    navigate(
+      `/${slugify(
+        //@ts-ignore
+
+        gametypes.find(gametype => gametype.id === gameTypeId)?.name,
+        { lower: true }
+      )}-${gameTypeId}`
+    )
+  }
+
+  const handleTranslate = (value: string) => {
+    setTranslateLoading(true)
+    translate(form.getFieldValue('review'), value).then(res => {
+      dispatch(
+        setSelectedOnlinePartner({
+          ...selectedOnlinePartner,
+          review: res.translatedText
+        })
+      )
+    }).finally(() => {
+      setTranslateLoading(false)
+    })
   }
 
   return (
@@ -183,8 +215,33 @@ const OnlinePartnerForm = () => {
               <InputNumber />
             </Form.Item>
           </div>
-          <Form.Item label='Review' name='review'>
-            <JoditEditor value={form.getFieldValue('text')} />
+          <Form.Item label='Review' name='review' className='reviewItem'>
+            <div className='reviewTranslate'>
+              <Select
+                placeholder='Translate'
+                showSearch
+                filterOption={(input, option) =>
+                  //@ts-ignore
+                  option?.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                onSelect={handleTranslate}
+                options={languages}
+              />
+            </div>
+            <Spin spinning={translateLoading}>
+              <JoditEditor
+                //@ts-ignore
+                value={selectedOnlinePartner?.review}
+                onChange={e =>
+                  dispatch(
+                    setSelectedOnlinePartner({
+                      ...selectedOnlinePartner,
+                      review: e
+                    })
+                  )
+                }
+              />
+            </Spin>
           </Form.Item>
           <div className='contentBtns'>
             <Button className='cancelBtn' onClick={handleCancel}>

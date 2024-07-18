@@ -1,4 +1,5 @@
 import PageHeader from '../../../components/ui/pageHeader'
+import ContentsModal from './components/contentsModal'
 import ContentsTable from './components/contentsTable'
 import { useNavigate } from 'react-router-dom'
 
@@ -15,7 +16,7 @@ const Contents = () => {
     <>
         <PageHeader title='Contents' btnText='Add' onBtnClick={handleAddContent} />
         <ContentsTable />
-        {/* <ContentsModal /> */}
+        <ContentsModal />
     </>
   )
 }

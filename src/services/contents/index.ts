@@ -44,3 +44,21 @@ export const deleteContent = async (id: number) => {
         throw error;
     }
 }
+
+export const getLanguages = async () => {
+    try {
+        const response = await axiosInstance.get("/contents/languages");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const translate = async (text: string, language: string) => {
+    try {
+        const response = await axiosInstance.post("/contents/translate", { text, targetLanguage: language });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

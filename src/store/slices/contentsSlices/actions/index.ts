@@ -1,5 +1,5 @@
-import { createContentSuccess, deleteContentSuccess, getContentsSuccess, sendRequestFailure, sendRequestStart, updateContentSuccess } from ".."
-import { createContent, deleteContent, getContents, updateContent } from "../../../../services/contents"
+import { createContentSuccess, deleteContentSuccess, getContentsSuccess, sendRequestFailure, sendRequestStart, setSelectedContent, updateContentSuccess } from ".."
+import { createContent, deleteContent, getContent, getContents, updateContent } from "../../../../services/contents"
 
 
 export const fetchContentsAction  = () => async (dispatch: any) => {
@@ -7,6 +7,16 @@ export const fetchContentsAction  = () => async (dispatch: any) => {
         dispatch(sendRequestStart())
         const contents = await getContents()
         dispatch(getContentsSuccess(contents))
+    } catch (error) {
+        dispatch(sendRequestFailure())
+    }
+}
+
+export const fetchContentAction = (id: number) => async (dispatch: any) => {
+    try {
+        dispatch(sendRequestStart())
+        const content = await getContent(id)
+        dispatch(setSelectedContent(content))
     } catch (error) {
         dispatch(sendRequestFailure())
     }
