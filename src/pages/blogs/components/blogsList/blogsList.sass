@@ -1,0 +1,18 @@
+.blogsList
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+    .blogItem
+        height: 300px
+        &__info
+            display: flex
+            gap: 20px
+            margin-bottom: 10px
+            &-img
+                width: 100px
+                height: 75px
+                img
+                    width: 100%
+                    height: 100%
+                    object-fit: cover
+        p
+            text-overflow: ellipsis

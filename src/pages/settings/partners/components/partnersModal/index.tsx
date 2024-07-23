@@ -75,7 +75,6 @@ const PartnersModal = () => {
     },
     //@ts-ignore
     onSuccess: (res: any) => {
-      console.log('eueu')
       handleGeneralInfoStateChange(res.originalname)
     },
     showUploadList: {

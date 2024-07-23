@@ -5,6 +5,7 @@ import { modalSlice } from './slices/modalSlices';
 import { contentSlice } from './slices/contentsSlices';
 import { partnersSlice } from './slices/partnersSlices';
 import { onlinePartnersSlice } from './slices/onlinePartnersSlice';
+import { blogsSlice } from './slices/blogsSlices';
 
 
 const store = configureStore({
@@ -14,7 +15,8 @@ const store = configureStore({
         highlights: highlightsSlice.reducer,
         contents: contentSlice.reducer,
         partners: partnersSlice.reducer,
-        onlinePartners: onlinePartnersSlice.reducer
+        onlinePartners: onlinePartnersSlice.reducer,
+        blogs: blogsSlice.reducer
     },
 });
 
