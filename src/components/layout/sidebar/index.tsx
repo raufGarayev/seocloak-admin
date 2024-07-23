@@ -92,7 +92,11 @@ const SidebarComponent = ({
       navigate(path)
     } else {
       const path = `/${slugify(dir, { replacement: '-', lower: true })}`
-      navigate('/settings'+path)
+      if(+item.key < 200) {
+        navigate('/settings' + path)
+      } else {
+        navigate(path)
+      }
     }
   }
 

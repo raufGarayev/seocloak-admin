@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { BiSolidBookContent } from 'react-icons/bi';
-import { FaHandshake, FaToolbox} from 'react-icons/fa';
+import { FaHandshake, FaMicroblog, FaToolbox} from 'react-icons/fa';
 import { MdTextFields } from 'react-icons/md';
 
 
@@ -25,6 +25,7 @@ function getItem(
 export const menus: MenuItem[] = [
     // getItem(`Slots`, '10', undefined, <FaHome />),
     // getItem(`Poker`, '11', undefined, <FaPhone />),
+    getItem('Blogs', 200, undefined, <FaMicroblog />),
     getItem('Settings', 100, [
         getItem('Partners', 101, undefined, <FaHandshake />, ),
         getItem('Highlights', 102, undefined, <MdTextFields /> ),
