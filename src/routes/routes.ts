@@ -5,6 +5,7 @@ import Partners from "../pages/settings/partners";
 import EditContent from "../pages/settings/editContent";
 import Blogs from "../pages/blogs";
 import EditBlog from "../pages/editBlog";
+import Gametype from "../pages/gametype";
 
 export interface RouteType {
   path: string;
@@ -13,8 +14,8 @@ export interface RouteType {
 
 export const routes: RouteType[] = [
   {
-    path: "/",
-    Component: Home,
+    path: "/slots-1",
+    Component: Gametype,
   },
   {
     path: "/settings/partners",
