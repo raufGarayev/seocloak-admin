@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { routes, RouteType } from './routes'
 import { useEffect, useState } from 'react'
 import slugify from 'slugify'
@@ -28,7 +28,7 @@ const Router = () => {
 
   return (
     <Routes>
-      <Route path='/'>
+      <Route path='/' element={<Navigate to="/slots-1" replace />} />
         {routes.map((route: RouteType, index) => (
           <Route key={index} {...route} />
         ))}
@@ -38,7 +38,6 @@ const Router = () => {
         {dynGametypeRoutes.map((route: RouteType, index) => (
           <Route key={index} {...route} />
         ))}
-      </Route>
     </Routes>
   )
 }
