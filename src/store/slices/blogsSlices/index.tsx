@@ -32,14 +32,13 @@ export const blogsSlice = createSlice({
       state.loading = false
     },
     deleteBlogSuccess: (state, action) => {
-      state.blogs = state.blogs.filter(
-        blog => blog.id !== action.payload
-      )
+      state.blogs = state.blogs.filter(blog => blog.id !== action.payload)
       state.loading = false
     },
     setSelectedBlog: (state, action) => {
-        state.selectedBlog = action.payload
-        }
+      state.selectedBlog = action.payload
+      state.loading = false
+    }
   }
 })
 

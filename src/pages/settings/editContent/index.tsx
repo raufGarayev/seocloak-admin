@@ -14,7 +14,7 @@ import {
   updateContentAction
 } from '../../../store/slices/contentsSlices/actions'
 import { toggleModal } from '../../../store/slices/modalSlices'
-import { getContent, getLanguages, translate } from '../../../services/contents'
+import { getLanguages, translate } from '../../../services/contents'
 
 const EditContent = () => {
   const [languages, setLanguages] = useState([])

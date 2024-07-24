@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import CustomCard from '../../../../components/common/card'
-import { Button, Form, Input, Skeleton, Upload, UploadProps } from 'antd'
+import { Button, Form, Image, Input, Skeleton, Upload, UploadProps } from 'antd'
 import JoditEditor from 'jodit-react'
 import { setSelectedBlog } from '../../../../store/slices/blogsSlices'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,13 +15,14 @@ import {
 const BlogForm = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedBlog } = useSelector((state: IRootStore) => state.blogs)
+  const { selectedBlog, loading } = useSelector(
+    (state: IRootStore) => state.blogs
+  )
   const navigate = useNavigate()
   const { id } = useParams()
 
-
   useEffect(() => {
-    if(id && id !== '0') {
+    if (id && id !== '0') {
       dispatch(fetchBlogAction(+id))
     }
 
@@ -29,6 +30,14 @@ const BlogForm = () => {
       dispatch(setSelectedBlog(null))
     }
   }, [])
+
+  useEffect(() => {
+    form.setFieldsValue(selectedBlog)
+  }, [selectedBlog])
+
+  const handleFormChange = (values: any) => {
+    dispatch(setSelectedBlog({ ...selectedBlog, ...values }))
+  }
 
   const handleGeneralInfoStateChange = (path: string) => {
     // dispatch(setGeneralInfoState({ key, value }));
@@ -57,10 +66,6 @@ const BlogForm = () => {
     }
   }
 
-  useEffect(() => {
-    form.setFieldsValue(selectedBlog)
-  }, [selectedBlog])
-
   const handleEditCancel = () => {
     dispatch(setSelectedBlog(null))
     form.resetFields()
@@ -83,43 +88,53 @@ const BlogForm = () => {
     }
   }
 
-  const handleFormChange = (values: any) => {
-    dispatch(setSelectedBlog({ ...selectedBlog, ...values }))
-  }
-
   return (
     <CustomCard>
-      {/* <Skeleton active={false}> */}
-      <Form
-        layout='vertical'
-        onFinish={handleEditSave}
-        onValuesChange={handleFormChange}
-      >
-        <div className='flexedFormItems'>
-          <Form.Item label='Blog title' name={'title'}>
-            <Input />
+      <Skeleton loading={loading}>
+        <Form
+          form={form}
+          layout='vertical'
+          onFinish={handleEditSave}
+          onValuesChange={handleFormChange}
+        >
+          <div className='flexedFormItems'>
+            <Form.Item label='Blog title' name={'title'}>
+              <Input />
+            </Form.Item>
+
+            <Form.Item label='Blog image' name={'image'}>
+              <Upload {...imageUploadProps}>
+                <Button>Click to upload</Button>
+                {selectedBlog?.image && (
+                  <Image
+                    width={100}
+                    height={75}
+                    src={
+                      import.meta.env.VITE_DOMAIN +
+                      '/images/' +
+                      selectedBlog.image
+                    }
+                    style={{marginLeft: 20}}
+                  />
+                )}
+              </Upload>
+            </Form.Item>
+          </div>
+          <Form.Item label='Content' name={'content'}>
+            <JoditEditor value='' />
           </Form.Item>
-          <Form.Item label='Blog image' name={'image'}>
-            <Upload {...imageUploadProps}>
-              <Button>Click to upload</Button>
-            </Upload>
-          </Form.Item>
-        </div>
-        <Form.Item label='Content' name={'content'}>
-          <JoditEditor value='' />
-        </Form.Item>
-        <div className='contentBtns'>
-          <Button className='cancelBtn' onClick={handleEditCancel}>
-            Cancel
-          </Button>
-          <Form.Item>
-            <Button className='saveBtn' htmlType='submit'>
-              Save
+          <div className='contentBtns'>
+            <Button className='cancelBtn' onClick={handleEditCancel}>
+              Cancel
             </Button>
-          </Form.Item>
-        </div>
-      </Form>
-      {/* </Skeleton> */}
+            <Form.Item>
+              <Button className='saveBtn' htmlType='submit'>
+                Save
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
+      </Skeleton>
     </CustomCard>
   )
 }
