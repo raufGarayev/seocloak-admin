@@ -1,5 +1,4 @@
 import Contents from "../pages/settings/contents";
-import Home from "../pages/home";
 import Highlights from "../pages/settings/highlights";
 import Partners from "../pages/settings/partners";
 import EditContent from "../pages/settings/editContent";
