@@ -19,6 +19,8 @@ const PartnersTable = () => {
   const [searchValue, setSearchValue] = useState('')
   const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null)
 
+
+
   useEffect(() => {
     dispatch(fetchPartnersAction(filters))
   }, [filters])

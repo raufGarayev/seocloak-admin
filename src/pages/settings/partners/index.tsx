@@ -6,18 +6,21 @@ import { toggleModal } from '../../../store/slices/modalSlices'
 import PartnersModal from './components/partnersModal'
 
 const Partners = () => {
-
   const dispatch = useDispatch<AppDispatch>()
 
   const handlePartnerAdd = () => {
-    dispatch(toggleModal({type: 'add'}))
+    dispatch(toggleModal({ type: 'add' }))
   }
 
   return (
     <>
-        <PageHeader title='Partners' btnText='Add' onBtnClick={handlePartnerAdd} />
-        <PartnersTable />
-        <PartnersModal />
+      <PageHeader
+        title='Partners'
+        btnText='Add'
+        onBtnClick={handlePartnerAdd}
+      />
+      <PartnersTable />
+      <PartnersModal />
     </>
   )
 }
