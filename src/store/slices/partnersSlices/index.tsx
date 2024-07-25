@@ -32,6 +32,8 @@ export const partnersSlice = createSlice({
     },
     createPartnerSuccess (state, action) {
       state.partners.data.push(action.payload)
+      state.loading = false
+
     },
     updatePartnerSuccess (state, action) {
       const index = state.partners.data.findIndex(
