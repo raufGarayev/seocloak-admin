@@ -46,6 +46,8 @@ const EditContent = () => {
 
   const handleEditCancel = () => {
     navigate(-1)
+    form.resetFields()
+    dispatch(setSelectedContent(null))
   }
 
   const handleEditSave = () => {
