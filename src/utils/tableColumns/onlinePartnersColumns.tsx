@@ -46,7 +46,7 @@ export const onlinePartnersColumns = (
       render: ({ partnerLogo }: { partnerLogo: string }) => (
         <div className='columnImage'>
           <img
-            src={import.meta.env.VITE_DOMAIN + '/images/' + partnerLogo}
+            src={import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo}
             alt='partner logo'
           />
         </div>

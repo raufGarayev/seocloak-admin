@@ -17,7 +17,7 @@ export const partnersColumns = (
     {
       title: <span className='columnName'>Partner logo</span>,
       render: ({ logo }: { logo: string }) => (
-        <div className='columnImage'><img src={`${import.meta.env.VITE_DOMAIN}/images/${logo}`} alt='partner logo' /></div>
+        <div className='columnImage'><img src={`${import.meta.env.VITE_DOMAIN}/images/partners/${logo}`} alt='partner logo' /></div>
       ),
       width: '26%'
     },

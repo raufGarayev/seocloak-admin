@@ -107,7 +107,7 @@ const PartnersModal = () => {
               <Image
                 src={
                   import.meta.env.VITE_DOMAIN +
-                  '/images/' +
+                  '/images/partners/' +
                   selectedPartner?.logo
                 }
                 width={'100%'}
