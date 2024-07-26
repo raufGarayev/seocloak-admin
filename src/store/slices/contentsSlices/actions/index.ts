@@ -42,7 +42,7 @@ export const updateContentAction = (content: any) => async (dispatch: any) => {
     }
 }
 
-export const deleteContentAction = (id: number) => async (dispatch: any) => {
+export const deleteContentAction = (id: number | number[]) => async (dispatch: any) => {
     try {
         dispatch(sendRequestStart())
         await deleteContent(id)

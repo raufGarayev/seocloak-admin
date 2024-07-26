@@ -36,9 +36,9 @@ export const updateContent = async (content: any) => {
     }
 }
 
-export const deleteContent = async (id: number) => {
+export const deleteContent = async (id: number | number[]) => {
     try {
-        const response = await axiosInstance.delete(`/contents/${id}`);
+        const response = await axiosInstance.delete(`/contents/`, { data: { id } });
         return response.data;
     } catch (error) {
         throw error;

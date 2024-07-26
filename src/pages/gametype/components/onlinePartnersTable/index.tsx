@@ -113,7 +113,7 @@ const OnlinePartnersTable = () => {
         dispatch(
           setSelectedOnlinePartners(
             selectedOnlinePartners.filter(
-              (partner: any) => partner !== selectedRowKeys
+              (partner: any) => partner.id !== selectedRowKeys.id
             )
           )
         )

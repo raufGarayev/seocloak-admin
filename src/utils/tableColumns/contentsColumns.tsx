@@ -1,10 +1,22 @@
-import { FaEdit, FaTrash } from 'react-icons/fa'
+import { Checkbox } from 'antd'
+import { FaCopy, FaEdit, FaTrash } from 'react-icons/fa'
 
 export const contentsColumns = (
   handleEditContent: (content: any) => void,
-  handleDelContent: (content: any) => void
+  handleDelContent: (content: any) => void,
+  handleCopyContent: (content: any) => void,
+  multiSelectMode: boolean,
+  selectedContents: any,
+  contents: any,
+  handleSelect: (content: any, status: boolean) => void
 ) => {
-  return [
+  const columns: {
+    key?: string
+    title?: JSX.Element | string
+    render?: (text: any, record: any, index: number) => JSX.Element
+    width?: string
+    align?: 'center' | 'left' | 'right'
+  }[] = [
     {
       title: <span className='columnName'>#</span>,
       render: (_: any, __: any, index: number) => (
@@ -40,6 +52,7 @@ export const contentsColumns = (
             onClick={() => handleEditContent(content)}
             className='editIcon'
           />
+          <FaCopy className='copyIcon' onClick={() =>handleCopyContent(content)} />
           <FaTrash
             onClick={() => handleDelContent(content)}
             className='deleteIcon'
@@ -49,4 +62,25 @@ export const contentsColumns = (
       width: '10%'
     }
   ]
+
+  if (multiSelectMode) {
+    columns.unshift({
+      key: 'select',
+      title: <Checkbox
+      onChange={e => handleSelect('all', e.target.checked)}
+      checked={selectedContents.length === contents.length}
+    />,
+      render: (content: any) => (
+        <Checkbox
+        onChange={e => handleSelect(content, e.target.checked)}
+        checked={selectedContents.some(
+          (selectedContent: any) => selectedContent.id === content.id
+        )}
+      />
+      ),
+      width: '10%'
+    })
+  }
+
+  return columns
 }

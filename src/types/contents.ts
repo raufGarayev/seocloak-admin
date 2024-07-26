@@ -2,6 +2,7 @@ export interface IContentState {
     contents: IContent[];
     loading: boolean;
     selectedContent: IContent | null;
+    selectedContents: IContent[];
 }
 
 export interface IContent {
