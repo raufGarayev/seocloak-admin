@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fa'
 import '../../styles/columns.sass'
 import { MdBlock } from 'react-icons/md'
-import { Checkbox, Dropdown, Select } from 'antd'
+import { Checkbox, Dropdown, Image, Select } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoCopy } from 'react-icons/io5'
 import { ImMobile } from 'react-icons/im'
@@ -45,10 +45,11 @@ export const onlinePartnersColumns = (
       title: <span className='columnName'>Partner logo</span>,
       render: ({ partnerLogo }: { partnerLogo: string }) => (
         <div className='columnImage'>
-          <img
+          {/* <img
             src={import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo}
             alt='partner logo'
-          />
+          /> */}
+          <Image src={import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo} alt='partner logo' width={'100%'} height={'100%'} />
         </div>
       ),
       width: '30%'
