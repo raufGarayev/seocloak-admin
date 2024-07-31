@@ -1,4 +1,4 @@
-import  { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
 import { fetchBlogsAction } from '../../../../store/slices/blogsSlices/actions'
@@ -23,30 +23,47 @@ const BlogsList = () => {
     dispatch(setSelectedBlog(blog))
     navigate('/blogs/' + blog.id)
   }
-  
+
   const handleDelete = (blog: IBlog) => {
     dispatch(setSelectedBlog(blog))
-    dispatch(toggleModal({type: 'del'}))
+    dispatch(toggleModal({ type: 'del' }))
   }
 
   return (
     <div className='blogsList'>
       {blogs.map(blog => (
         <CustomCard key={blog.id} className='blogItem'>
-            <div className='blogItem__info'>
-              <div className='blogItem__info-img'>
-                <Image
-                  src={`${import.meta.env.VITE_DOMAIN}/images/${blog.image}`}
-                  alt={blog.title}
-                  height={'100%'}
-                  width={'100%'}
-                />
-              </div>
-              <h4>{blog.title}</h4>
+          <div className='blogItem__info'>
+            <div className='blogItem__info-img'>
+              <Image
+                src={`${import.meta.env.VITE_DOMAIN}/images/${blog.image}`}
+                alt={blog.title}
+                height={'100%'}
+                width={'100%'}
+              />
             </div>
-            <div dangerouslySetInnerHTML={{__html: blog.content.length > 700 ? blog.content.slice(0, 700) + '...' : blog.content}} />
-              <Button className='blogItem__edit' onClick={() => navigateToEditPage(blog)}>Edit</Button>
-              <Button className='blogItem__delete' onClick={() => handleDelete(blog)}>Delete</Button>
+            <h4>{blog.title}</h4>
+          </div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                blog.content.length > 700
+                  ? blog.content.slice(0, 700) + '...'
+                  : blog.content
+            }}
+          />
+          <Button
+            className='blogItem__edit'
+            onClick={() => navigateToEditPage(blog)}
+          >
+            Edit
+          </Button>
+          <Button
+            className='blogItem__delete'
+            onClick={() => handleDelete(blog)}
+          >
+            Delete
+          </Button>
         </CustomCard>
       ))}
     </div>
