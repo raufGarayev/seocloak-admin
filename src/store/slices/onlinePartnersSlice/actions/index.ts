@@ -1,6 +1,6 @@
 import { createOnlinePartnerSuccess, deleteOnlinePartnerSuccess, fetchOnlinePartnersSuccess, sendRequestFailure, sendRequestStart, setSelectedOnlinePartner, updateOnlinePartnersOrderSuccess, updateOnlinePartnerSuccess } from ".."
 import { cleanObject } from "../../../../helpers"
-import { createOnlinePartner, deleteOnlinePartner, fetchOnlinePartners, getOnlinePartner, updateOnlinePartner, updateOnlinePartnersOrder } from "../../../../services/onlinePartners"
+import { createOnlinePartner, deleteOnlinePartner, fetchOnlinePartners, getOnlinePartner, updateOnlinePartner, updateOnlinePartnersOrder, updateOnlinePartnerStatus } from "../../../../services/onlinePartners"
 
 export const fetchOnlinePartnersAction = (gameTypeId: number, filters: any) => async (dispatch: any) => {
     dispatch(sendRequestStart())
@@ -64,3 +64,12 @@ export const getOnlinePartnerAction = (id: number) => async (dispatch: any) => {
     }
 }
 
+export const updateOnlinePartnerStatusAction = (id: number, status: boolean) => async (dispatch: any) => {
+    dispatch(sendRequestStart())
+    try {
+        const response = await updateOnlinePartnerStatus(id, status)
+        dispatch(updateOnlinePartnerSuccess(response))
+    } catch (error) {
+        dispatch(sendRequestFailure())
+    }
+}

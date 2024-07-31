@@ -6,7 +6,10 @@ import { Input } from 'antd'
 import './partnersTable.sass'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../../store'
-import { setFilters, setSelectedPartner } from '../../../../../store/slices/partnersSlices'
+import {
+  setFilters,
+  setSelectedPartner
+} from '../../../../../store/slices/partnersSlices'
 import { fetchPartnersAction } from '../../../../../store/slices/partnersSlices/actions'
 import { IPartner } from '../../../../../types/partners'
 import { toggleModal } from '../../../../../store/slices/modalSlices'
@@ -19,7 +22,11 @@ const PartnersTable = () => {
   const [searchValue, setSearchValue] = useState('')
   const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null)
 
-
+  useEffect(() => {
+    return () => {
+      dispatch(setFilters({ ...filters, search: '' }))
+    }
+  }, [])
 
   useEffect(() => {
     dispatch(fetchPartnersAction(filters))
@@ -47,7 +54,7 @@ const PartnersTable = () => {
 
     // Set a new timeout
     const newTimeout = setTimeout(() => {
-      dispatch(setFilters({ ...filters, search: searchValue }))
+      dispatch(setFilters({ ...filters, search: e.target.value }))
     }, 700)
 
     // Save the new timeout

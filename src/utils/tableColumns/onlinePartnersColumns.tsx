@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fa'
 import '../../styles/columns.sass'
 import { MdBlock } from 'react-icons/md'
-import { Checkbox, Dropdown, Image, Select } from 'antd'
+import {  Checkbox, Dropdown, Image, Select } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoCopy } from 'react-icons/io5'
 import { ImMobile } from 'react-icons/im'
@@ -22,7 +22,7 @@ export const onlinePartnersColumns = (
   multiSelectMode: boolean,
   selectedOnlinePartners: any,
   onlinePartners: any,
-  handleFilter: (key: string, value: string | null) => void
+  handleFilter: (key: string, value: string | null) => void,
 ) => {
   const columns: {
     key?: string
@@ -49,7 +49,14 @@ export const onlinePartnersColumns = (
             src={import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo}
             alt='partner logo'
           /> */}
-          <Image src={import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo} alt='partner logo' width={'100%'} height={'100%'} />
+          <Image
+            src={
+              import.meta.env.VITE_DOMAIN + '/images/partners/' + partnerLogo
+            }
+            alt='partner logo'
+            width={'100%'}
+            height={'100%'}
+          />
         </div>
       ),
       width: '30%'

@@ -1,12 +1,12 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo,  useEffect } from 'react'
 import CustomCard from '../../../../components/common/card'
 import CustomTable from '../../../../components/common/table'
 import { onlinePartnersColumns } from '../../../../utils/tableColumns/onlinePartnersColumns'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../store'
 import {
-  updateOnlinePartnerAction,
-  updateOnlinePartnersOrderAction
+  updateOnlinePartnersOrderAction,
+  updateOnlinePartnerStatusAction
 } from '../../../../store/slices/onlinePartnersSlice/actions'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -35,6 +35,7 @@ import { IoCopy } from 'react-icons/io5'
 import './onlinePartnersTable.sass'
 
 const OnlinePartnersTable = () => {
+
   const dispatch = useDispatch<AppDispatch>()
   const {
     gameTypeId,
@@ -87,7 +88,7 @@ const OnlinePartnersTable = () => {
   }
 
   const handleOnPartnerStatus = (partner: any) => {
-    dispatch(updateOnlinePartnerAction(partner.id, { status: !partner.status }))
+    dispatch(updateOnlinePartnerStatusAction(partner.id, !partner.status))
   }
 
   const handleCopyHere = (partner: any) => {
@@ -120,7 +121,6 @@ const OnlinePartnersTable = () => {
       }
     } else {
       if (status) {
-        console.log('it is all: ', onlinePartners)
         dispatch(setSelectedOnlinePartners(onlinePartners))
       } else {
         dispatch(setSelectedOnlinePartners([]))
@@ -141,13 +141,16 @@ const OnlinePartnersTable = () => {
   }
 
   const handleFilter = (key: string, value: string | null) => {
-    dispatch(setFilters({...filters, [key]: value}))
+    dispatch(setFilters({ ...filters, [key]: value }))
   }
 
   return (
     <CustomCard>
       <div className='btnsContainer'>
-        <Button onClick={() => dispatch(setMultiSelectMode(!multiSelectMode))} disabled={onlinePartners.length === 0}>
+        <Button
+          onClick={() => dispatch(setMultiSelectMode(!multiSelectMode))}
+          disabled={onlinePartners.length === 0}
+        >
           Multi select
         </Button>
         {multiSelectMode && (
@@ -189,7 +192,7 @@ const OnlinePartnersTable = () => {
               multiSelectMode,
               selectedOnlinePartners,
               onlinePartners,
-              handleFilter
+              handleFilter,
             )}
             data={onlinePartners}
             loading={loading}

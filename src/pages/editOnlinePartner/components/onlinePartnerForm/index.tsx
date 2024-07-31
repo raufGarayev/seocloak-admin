@@ -95,7 +95,7 @@ const OnlinePartnerForm = () => {
       ).then(() => {
         form.resetFields()
         dispatch(setSelectedOnlinePartner(null))
-        navigate(-1)
+        navigate(window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')))
       })
     } else {
       if (id) {
@@ -103,7 +103,7 @@ const OnlinePartnerForm = () => {
           () => {
             form.resetFields()
             dispatch(setSelectedOnlinePartner(null))
-            navigate(-1)
+            navigate(window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')))
           }
         )
       }

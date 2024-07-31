@@ -55,3 +55,12 @@ export const deleteOnlinePartner = async (id: number) => {
         throw error;
     }
 }
+
+export const updateOnlinePartnerStatus = async (id: number, status: boolean) => {
+    try {
+        const response = await axiosInstance.patch(`/online-partners/status/${id}/`, { status });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
