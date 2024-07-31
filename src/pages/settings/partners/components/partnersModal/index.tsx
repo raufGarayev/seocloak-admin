@@ -31,9 +31,7 @@ const PartnersModal = () => {
         form.resetFields()
       })
     } else {
-        console.log("dsds")
       if (selectedPartner) {
-        console.log("dsds")
         dispatch(deletePartnerAction(selectedPartner.id)).then(() => {
           dispatch(toggleModal(null))
           dispatch(setSelectedPartner(null))

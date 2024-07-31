@@ -18,7 +18,6 @@ export const createOnlinePartnerAction = (data: any) => async (dispatch: any) =>
         const response = await createOnlinePartner(data)
         dispatch(createOnlinePartnerSuccess(response))
     } catch (error) {
-        console.log("burda qaqa action")
         dispatch(sendRequestFailure())
         throw error
     }

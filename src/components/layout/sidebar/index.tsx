@@ -82,7 +82,6 @@ const SidebarComponent = ({
   }, [location.pathname])
 
   const handleMenuSelect = (item: any) => {
-    console.log("selecting")
     const dir = item.domEvent.currentTarget.innerText
     // const parentDir = item.domEvent.currentTarget.childNodes[1].innerText
     if (+item.key < 100) {
