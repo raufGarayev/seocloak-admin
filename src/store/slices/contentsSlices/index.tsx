@@ -4,7 +4,8 @@ import { IContentState } from '../../../types/contents'
 const initialContentState = {
   contents: [],
   loading: false,
-  selectedContent: null
+  selectedContent: null,
+  selectedContents: []
 }
 
 export const contentSlice = createSlice({
@@ -22,7 +23,11 @@ export const contentSlice = createSlice({
       state.loading = false
     },
     createContentSuccess: (state, action) => {
-      state.contents.push(action.payload)
+      const newContents = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload]
+
+      state.contents = state.contents.concat(newContents)
       state.loading = false
     },
 
@@ -42,6 +47,9 @@ export const contentSlice = createSlice({
 
     setSelectedContent: (state, action) => {
       state.selectedContent = action.payload
+    },
+    setSelectedContents: (state, action) => {
+      state.selectedContents = action.payload
     }
   }
 })
@@ -53,5 +61,6 @@ export const {
   createContentSuccess,
   updateContentSuccess,
   deleteContentSuccess,
-  setSelectedContent
+  setSelectedContent,
+  setSelectedContents
 } = contentSlice.actions

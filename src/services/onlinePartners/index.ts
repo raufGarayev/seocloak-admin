@@ -21,8 +21,10 @@ export const getOnlinePartner = async (id: number) => {
 export const createOnlinePartner = async (data: any) => {
     try {
         const response = await axiosInstance.post("/online-partners", data);
+        console.log("burda qaq aservic ", response)
         return response.data;
     } catch (error) {
+        console.log("burda qaq aservic")
         throw error;
     }
 }

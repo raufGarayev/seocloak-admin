@@ -4,24 +4,36 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, IRootStore } from '../../../../../store'
 import { toggleModal } from '../../../../../store/slices/modalSlices'
 import { useEffect } from 'react'
+import { deleteContentAction } from '../../../../../store/slices/contentsSlices/actions'
 import {
-  deleteContentAction,
-} from '../../../../../store/slices/contentsSlices/actions'
-import { setSelectedContent } from '../../../../../store/slices/contentsSlices'
+  setSelectedContent,
+  setSelectedContents
+} from '../../../../../store/slices/contentsSlices'
 
 const ContentsModal = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { type } = useSelector((state: IRootStore) => state.modal)
-  const { selectedContent } = useSelector((state: IRootStore) => state.contents)
+  const { type, hint } = useSelector((state: IRootStore) => state.modal)
+  const { selectedContent, selectedContents } = useSelector(
+    (state: IRootStore) => state.contents
+  )
   const [form] = Form.useForm()
 
   const handleModalSubmit = () => {
-    if (selectedContent) {
-      dispatch(deleteContentAction(selectedContent?.id)).then(() => {
+    if (hint === 'multi') {
+      dispatch(
+        deleteContentAction(selectedContents.map(content => content.id))
+      ).then(() => {
         dispatch(toggleModal(null))
-        dispatch(setSelectedContent(null))
-        form.resetFields()
+        dispatch(setSelectedContents([]))
       })
+    } else {
+      if (selectedContent) {
+        dispatch(deleteContentAction(selectedContent?.id)).then(() => {
+          dispatch(toggleModal(null))
+          dispatch(setSelectedContent(null))
+          form.resetFields()
+        })
+      }
     }
   }
 
